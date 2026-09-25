@@ -1,0 +1,279 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * Both faces are served from this origin. A font host is a second DNS lookup, a
+ * second TLS handshake and a render-blocking stylesheet before a byte of the
+ * face is asked for; these two files are 83KB together and arrive on the
+ * connection the page already has open.
+ */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/archivo-latin-variable.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/inter-latin-variable.woff2') format('woff2');
+}
+
+/**
+ * The third face is a mono, and it is doing real work rather than decoration.
+ * An arborist quotes heights, depths, diameters and dollars; setting every
+ * figure and every label in a mono makes the site read like something measured
+ * instead of something written, and it keeps numbers in columns aligned.
+ */
+@font-face {
+  font-family: 'Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/plex-mono-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/plex-mono-500.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/plex-mono-600.woff2') format('woff2');
+}
+
+/* Metric-matched stand-ins, so the swap does not reflow every line. */
+@font-face {
+  font-family: 'Archivo Fallback';
+  src: local('Arial'), local('Helvetica Neue'), local('Helvetica');
+  font-display: swap;
+  size-adjust: 103.53%;
+  ascent-override: 84.8%;
+  descent-override: 20.28%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial'), local('Helvetica Neue'), local('Helvetica');
+  font-display: swap;
+  size-adjust: 104.97%;
+  ascent-override: 92.29%;
+  descent-override: 22.98%;
+  line-gap-override: 0%;
+}
+
+/**
+ * Two layers, in the order a value travels: the ramp holds the raw colours and
+ * never changes; the semantic aliases below name what a value is for and are
+ * the only thing a component reads. The palette is bark, canopy and moss for
+ * the trade, with one safety orange — the colour of chaps, cones and rigging —
+ * reserved for the single action that matters on a page.
+ */
+:root {
+  --bark-950: #111a14;
+  --bark-900: #16201a;
+  --canopy-800: #1b3d2a;
+  --canopy-700: #1f4a32;
+  --moss-600: #2f6641;
+  --moss-500: #3e7a52;
+  --moss-200: #bfd6c5;
+  --rigging-600: #b4500f;
+  --rigging-500: #d2621c;
+  --rigging-200: #f2d3b9;
+  --paper-50: #faf8f3;
+  --paper-100: #f2efe6;
+  --paper-200: #e3ded0;
+  --tan-300: #cfc7b3;
+  --ink-700: #3c4640;
+  --surface: #ffffff;
+
+  --header-height: 4.5rem;
+
+  /* One display scale, used everywhere, so a heading's size means something
+     about its rank rather than about which page it happens to sit on. */
+  --step-hero: clamp(2.7rem, 6.4vw, 5rem);
+  --step-1: clamp(2rem, 3.6vw, 3.1rem);
+  --step-2: clamp(1.45rem, 2.2vw, 1.85rem);
+  --step-3: 1.2rem;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height) + 1rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+body {
+  background: var(--paper-50);
+  color: var(--ink-700);
+  font-family: 'Inter', 'Inter Fallback', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--rigging-500);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@layer components {
+  .shell {
+    width: 100%;
+    max-width: 1280px;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .shell {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  .eyebrow {
+    font-family: 'Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--rigging-600);
+  }
+
+  .eyebrow-light {
+    color: var(--rigging-200);
+  }
+
+  /* Display headings. The negative tracking is the point: Archivo at 800 with
+     the letters pulled together reads as a piece of signage, which is the
+     register a company with a chipper and a bucket truck belongs in. */
+  .display {
+    font-family: 'Archivo', 'Archivo Fallback', system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.028em;
+    line-height: 1.03;
+    text-wrap: balance;
+    color: var(--ink-900, var(--bark-900));
+  }
+
+  .h-hero {
+    font-size: var(--step-hero);
+  }
+  .h1 {
+    font-size: var(--step-1);
+    line-height: 1.08;
+  }
+  .h2 {
+    font-size: var(--step-2);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+  .h3 {
+    font-size: var(--step-3);
+    line-height: 1.25;
+    letter-spacing: -0.012em;
+  }
+
+  /* Figures, labels and anything measured. */
+  /* Tabular figures are for columns that line up. Applied to prose -- a phone
+     number, a price with a thousands comma -- they give the punctuation a full
+     digit of width and the number reads as "$1 , 430", so they are opt-in. */
+  .mono {
+    font-family: 'Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-variant-numeric: normal;
+  }
+
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .label {
+    font-family: 'Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted, var(--ink-700));
+  }
+
+  /* A faint contour pattern, the way a survey drawing is ruled. It sits under
+     one section only; spread across the page it would be wallpaper. */
+  .contours {
+    background-image: repeating-radial-gradient(
+      circle at 18% 118%,
+      transparent 0 46px,
+      rgba(47, 102, 65, 0.055) 46px 47px
+    );
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    line-height: 1.1;
+    padding: 1rem 1.6rem;
+    transition:
+      background-color 140ms ease,
+      color 140ms ease;
+  }
+
+  .btn-primary {
+    background: var(--rigging-500);
+    color: #fff;
+  }
+  .btn-primary:hover {
+    background: var(--rigging-600);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--paper-50);
+    border: 1px solid var(--moss-600);
+  }
+  .btn-ghost:hover {
+    background: var(--canopy-800);
+  }
+
+  .btn-outline {
+    background: var(--surface);
+    color: var(--canopy-700);
+    border: 1px solid var(--paper-200);
+  }
+  .btn-outline:hover {
+    background: var(--paper-100);
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--paper-200);
+    border-radius: 4px;
+  }
+
+  .prose-body p + p {
+    margin-top: 1rem;
+  }
+}
