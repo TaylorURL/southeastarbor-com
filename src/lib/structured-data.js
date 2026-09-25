@@ -20,7 +20,6 @@ export function treeServiceSchema(areaNames = []) {
     description: company.tagline,
     telephone: company.phone,
     foundingDate: String(company.foundedYear),
-    priceRange: '$$',
   };
 
   if (hasAddress) {

@@ -7,7 +7,6 @@ import { gallery } from '../content/gallery';
 import { useSeo } from '../lib/seo';
 import { treeServiceSchema } from '../lib/structured-data';
 import PhotoHero from '../components/sections/PhotoHero';
-import Estimator from '../components/sections/Estimator';
 import EstimateForm from '../components/forms/EstimateForm';
 
 const proof = [
@@ -26,7 +25,7 @@ export default function Home() {
   useSeo({
     title: 'Tree Removal & Tree Service in Pasadena, TX | Southeast Arbor Care',
     description:
-      'Family-owned tree removal, trimming, stump grinding and storm cleanup in Pasadena, Deer Park, La Porte and Clear Lake. See a Ballpark Price before you call. Since 2000.',
+      'Family-owned tree removal, trimming, stump grinding and storm cleanup in Pasadena, Deer Park, La Porte and Clear Lake. Since 2000.',
     path: '/',
     jsonLd: [treeServiceSchema(areas.map((a) => a.name))],
   });
@@ -44,9 +43,6 @@ export default function Home() {
           <Link to="/free-estimate" className="btn btn-primary text-[1.05rem]">
             Get a Free Estimate
           </Link>
-          <a href="#ballpark" className="btn btn-ghost text-[1.05rem]">
-            See a Ballpark Price
-          </a>
         </div>
       </PhotoHero>
 
@@ -63,27 +59,6 @@ export default function Home() {
               <p className="mt-2 text-[0.83rem] leading-snug text-moss-200">{note}</p>
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* ---- the thing nobody else in Pasadena does ---- */}
-      <section
-        id="ballpark"
-        className="contours border-b border-paper-200 bg-paper-100 py-16 md:py-24"
-      >
-        <div className="shell">
-          <div className="max-w-2xl">
-            <p className="eyebrow">Before you even call</p>
-            <h2 className="display h1 mt-3 text-bark-900">What is this going to cost?</h2>
-            <p className="mt-5 text-[1.08rem] leading-relaxed text-ink-700">
-              Everybody asks it first and nobody answers it. Pick the three things that actually
-              move the price and we will show you the range we work in — then come out and put a
-              real number in writing, for free.
-            </p>
-          </div>
-          <div className="mt-10">
-            <Estimator />
-          </div>
         </div>
       </section>
 
