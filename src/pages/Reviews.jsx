@@ -19,7 +19,7 @@ const profiles = [
 export default function Reviews() {
   useSeo({
     title: 'Reviews — Southeast Arbor Care, Pasadena TX',
-    description: `${reviewTotals.count} reviews across ${reviewTotals.sources}, averaging ${reviewTotals.rating} stars. Read them and leave one.`,
+    description: `${reviewTotals.label} across ${reviewTotals.sources}, averaging ${reviewTotals.rating} stars. Read them and leave one.`,
     path: '/reviews',
     jsonLd: [
       breadcrumbSchema([
@@ -33,7 +33,7 @@ export default function Reviews() {
     <>
       <PageHeader
         eyebrow="What neighbors say"
-        title={`${reviewTotals.count} reviews, and a five-star average on all of them`}
+        title={`${reviewTotals.label}, and a five-star average on all of them`}
         intro={`Collected across ${reviewTotals.sources}. If we have worked in your yard, a review is the single most useful thing you can do for us.`}
         crumbs={[{ name: 'Home', path: '/' }]}
       />
