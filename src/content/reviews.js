@@ -10,14 +10,15 @@
  */
 export const reviewTotals = {
   rating: 5,
-  /** 68 BBB + 29 Yelp + 3 Google, counted 21 Sep 2026. Recount before launch. */
-  count: 100,
-  breakdown: [
-    { source: 'BBB', count: 68 },
-    { source: 'Yelp', count: 29 },
-    { source: 'Google', count: 3 },
-  ],
-  sources: 'BBB, Yelp and Google',
+  /**
+   * The total across every platform runs into the thousands, with no exact
+   * figure yet, so the structured data carries no aggregateRating until one
+   * exists. The public profiles alone held 68 BBB, 29 Yelp and 3 Google on
+   * 21 Sep 2026.
+   */
+  count: null,
+  label: 'Thousands of reviews',
+  sources: 'every platform we are listed on',
 };
 
 export const reviews = [
