@@ -29,6 +29,9 @@
         var endpoint = 'https://sunday.tail1f78d7.ts.net/report';
         var site = 'Southeast Arbor Care';
         var sent = 0;
+        // Taken before the wrapper below replaces window.fetch, so the second
+        // request that settles an asset failure cannot report its own result.
+        var nativeFetch = window.fetch ? window.fetch.bind(window) : null;
         // Nothing the page can intercept reaches the visitor's console. Each
         // error is reported first and swallowed second, so the report is made
         // whether or not the suppression holds. What survives is written by the
@@ -91,8 +94,18 @@
             fetch(endpoint, { method: 'POST', body: body, keepalive: true }).catch(function () {});
           }
         }
+        // Leaving the page is itself one of the things that abandons every
+        // request still open, so an error event arriving as the document goes
+        // away is the weakest evidence there is, and the second request that
+        // would settle it cannot come back before the page is gone. Sending it
+        // anyway turns an ordinary visit closed mid-load into a burst of
+        // failures naming files that are on the server and load for everyone
+        // who stays. A file the server really does not have keeps failing, so
+        // the next visit that outlasts the wait reports it with the evidence
+        // this moment cannot supply, and what is held here is dropped.
         addEventListener('pagehide', function () {
           unloading = true;
+          heldAssets.length = 0;
         });
         // Everything swallowed stays readable on the page itself, so a live
         // console with the flag off still answers what happened.
@@ -148,6 +161,45 @@
         // as an http 404 through the fetch wrapper below, so nothing that
         // matters is lost by skipping these tags.
         var MEDIA_LIFECYCLE_TAGS = { SOURCE: 1, VIDEO: 1, AUDIO: 1, TRACK: 1, PICTURE: 1 };
+        // A subresource that never arrives raises the same error event whether the
+        // server does not have it or the browser cancelled the request, and a
+        // cancelled one is not a fault: leaving the page, losing signal, or a
+        // release rotating the file out from under a document already in flight
+        // all abandon every outstanding link and image at once. Asking for the
+        // file a second time separates the two, since a file the server does not
+        // have answers the same way twice and a cancelled one answers normally.
+        // A cross-origin answer carries no status, so there the only evidence
+        // available is whether the request completes.
+        function reportIfStillMissing(message, url) {
+          if (!nativeFetch || !url) {
+            report('resource', message);
+            return;
+          }
+          var opaque = url.indexOf(location.origin + '/') !== 0;
+          nativeFetch(url, { cache: 'no-store', mode: opaque ? 'no-cors' : 'same-origin' }).then(
+            function (response) {
+              if (!opaque && !response.ok) report('resource', message);
+            },
+            function () {
+              // A page on its way out cancels this request too, which says nothing
+              // about the file.
+              if (!unloading) report('resource', message);
+            },
+          );
+        }
+        // Asset failures wait rather than reporting at once, so that the things
+        // which abandon every outstanding request at the same moment have passed
+        // before anything is sent. Anything still held when the wait elapses goes
+        // on to the second request that separates a missing file from a
+        // cancelled one.
+        var HOLD_MS = 1500;
+        var heldAssets = [];
+        function flushHeldAssets() {
+          var pending = heldAssets.splice(0, heldAssets.length);
+          for (var i = 0; i < pending.length; i += 1) {
+            reportIfStillMissing(pending[i].message, pending[i].url);
+          }
+        }
         // Capture phase, because element load failures fire error events that do not bubble.
         window.addEventListener(
           'error',
@@ -155,13 +207,12 @@
             try {
               if (event.target && event.target !== window && event.target.tagName) {
                 if (MEDIA_LIFECYCLE_TAGS[event.target.tagName]) return;
-                report(
-                  'resource',
-                  'Failed to load ' +
-                    event.target.tagName.toLowerCase() +
-                    ': ' +
-                    (event.target.src || event.target.href || ''),
-                );
+                var source = event.target.src || event.target.href || '';
+                heldAssets.push({
+                  message: 'Failed to load ' + event.target.tagName.toLowerCase() + ': ' + source,
+                  url: source,
+                });
+                setTimeout(flushHeldAssets, HOLD_MS);
               } else {
                 report('uncaught', event.message, event.error && event.error.stack);
               }
