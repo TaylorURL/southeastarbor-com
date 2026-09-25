@@ -297,12 +297,12 @@ export default function Home() {
         <div className="shell">
           <p className="eyebrow">What neighbors say</p>
           <h2 className="display h1 mt-3 max-w-3xl text-bark-900">
-            A hundred reviews, and a five-star average on every one of them.
+            {reviewTotals.label}, and a five-star average on every one of them.
           </h2>
           <p className="mt-4 max-w-2xl leading-relaxed text-ink-700">
-            {reviewTotals.breakdown.map((b) => `${b.count} on ${b.source}`).join(', ')}. The three
-            below are the Google ones, word for word — and three is the number that has to grow,
-            because Google is the only one of them that feeds the map.
+            The three below are the Google ones, word for word. Google has only those three so far,
+            and that is the count that has to grow, because Google is the only site that feeds the
+            map.
           </p>
           <div className="mt-9 grid gap-5 md:grid-cols-3">
             {reviews.map((review) => (
