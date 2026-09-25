@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2026.39.3-1f4a32?style=for-the-badge" alt="Version 2026.39.3" />
+  <img src="https://img.shields.io/badge/version-2026.39.4-1f4a32?style=for-the-badge" alt="Version 2026.39.4" />
   <img src="https://img.shields.io/badge/React-19-1f4a32?style=for-the-badge&logo=react&logoColor=white" alt="React 19" />
   <img src="https://img.shields.io/badge/Vite-7-1f4a32?style=for-the-badge&logo=vite&logoColor=white" alt="Vite 7" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-3-1f4a32?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS 3" />
@@ -23,17 +23,17 @@
 
 ## Pages
 
-| Route                  | Holds                                                  |
-| :--------------------- | :----------------------------------------------------- |
-| `/`                    | Hero, the ballpark estimator, services, reviews, areas |
-| `/services`            | Every service                                          |
-| `/services/:slug`      | One service in detail                                  |
-| `/service-areas`       | Every town served                                      |
-| `/service-areas/:slug` | One town                                               |
-| `/about`               | Terry and the company                                  |
-| `/our-work`            | Photos from the job                                    |
-| `/reviews`             | Published customer reviews                             |
-| `/free-estimate`       | The estimate request form                              |
+| Route                  | Holds                          |
+| :--------------------- | :----------------------------- |
+| `/`                    | Hero, services, reviews, areas |
+| `/services`            | Every service                  |
+| `/services/:slug`      | One service in detail          |
+| `/service-areas`       | Every town served              |
+| `/service-areas/:slug` | One town                       |
+| `/about`               | Terry and the company          |
+| `/our-work`            | Photos from the job            |
+| `/reviews`             | Published customer reviews     |
+| `/free-estimate`       | The estimate request form      |
 
 ## Stack
 
@@ -56,7 +56,7 @@ npm run build         # production build to dist
 
 Node 22 or newer. `VITE_SITE_URL` sets the origin the canonical tags and structured data are built from, and falls back to `https://southeastarbor.com`.
 
-Every business fact the site states lives in `src/content/company.js`: phone, address, hours, owner, credentials and profile links. An empty value there is how a fact that is not established yet is held. Services, towns, reviews, gallery photos and the estimator's ranges live beside it in `src/content/`.
+Every business fact the site states lives in `src/content/company.js`: phone, address, hours, owner, credentials and profile links. An empty value there is how a fact that is not established yet is held. Services, towns, reviews and gallery photos live beside it in `src/content/`.
 
 ### Scripts
 
@@ -72,7 +72,6 @@ Every business fact the site states lives in `src/content/company.js`: phone, ad
 
 ## How it works
 
-- **A price before the phone call.** The estimator on the home page quotes a range from the job, the tree's height and how the crew gets to it. The ranges in `src/content/pricing.js` are market placeholders until they are replaced with Terry's own.
 - **Every route writes its own head.** The site renders in the browser, so `src/lib/seo.js` sets the title, description, canonical, robots, Open Graph and JSON-LD as each route mounts.
 - **Storm mode is one switch.** `stormMode` in `company.js` puts the emergency bar above every page.
 - **Search engines are kept off for now.** `vercel.json` sends `X-Robots-Tag: noindex` on every response. Remove that header when the site launches.
@@ -94,8 +93,8 @@ southeastarbor-com/
 │   ├── components/
 │   │   ├── forms/          EstimateForm
 │   │   ├── layout/         Header, Footer, Layout, CallRail, StormBanner
-│   │   └── sections/       Estimator, PhotoHero, EstimateCta, PageHeader
-│   ├── content/            company, services, areas, reviews, gallery, pricing
+│   │   └── sections/       PhotoHero, EstimateCta, PageHeader
+│   ├── content/            company, services, areas, reviews, gallery
 │   ├── lib/                seo.js, structured-data.js
 │   ├── pages/              one file per route
 │   ├── App.jsx             the route table
