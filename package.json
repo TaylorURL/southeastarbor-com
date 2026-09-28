@@ -2,7 +2,7 @@
   "name": "southeastarbor-com",
   "private": true,
   "license": "UNLICENSED",
-  "version": "2026.39.4",
+  "version": "2026.40.0",
   "type": "module",
   "engines": {
     "node": ">=22"
