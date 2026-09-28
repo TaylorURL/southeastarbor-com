@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { company, yearsInBusiness } from '../content/company';
 import { services } from '../content/services';
@@ -22,6 +23,23 @@ const featured = services.filter((s) => ['tree-removal', 'storm-and-emergency'].
 const rest = services.filter((s) => !['tree-removal', 'storm-and-emergency'].includes(s.slug));
 
 export default function Home() {
+  // The footage behind "how the day goes" is decoration, and it is heavier than
+  // every photograph on this page put together. Left to load with them it takes
+  // the larger share of one connection and the photographs queue behind it,
+  // which is how a visitor ends up looking at empty frames on a page whose files
+  // are all present. The poster carries the section until the page is otherwise
+  // done, and the footage arrives afterwards.
+  const [playFootage, setPlayFootage] = useState(false);
+  useEffect(() => {
+    if (document.readyState === 'complete') {
+      setPlayFootage(true);
+      return undefined;
+    }
+    const start = () => setPlayFootage(true);
+    window.addEventListener('load', start);
+    return () => window.removeEventListener('load', start);
+  }, []);
+
   useSeo({
     title: 'Tree Removal & Tree Service in Pasadena, TX | Southeast Arbor Care',
     description:
@@ -143,13 +161,13 @@ export default function Home() {
       <section className="relative isolate overflow-hidden bg-bark-950">
         <video
           className="absolute inset-0 h-full w-full object-cover opacity-40"
-          src="/video/tree-work.mp4"
+          src={playFootage ? '/video/tree-work.mp4' : undefined}
           poster="/photos/chainsaw-trunk.jpg"
           autoPlay
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="none"
           aria-hidden="true"
         />
         <div className="absolute inset-0 bg-bark-950/60" />
