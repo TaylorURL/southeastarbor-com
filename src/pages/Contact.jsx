@@ -4,6 +4,7 @@ import { areas } from '../content/areas';
 import { useSeo } from '../lib/seo';
 import { breadcrumbSchema, treeServiceSchema } from '../lib/structured-data';
 import PageHeader from '../components/sections/PageHeader';
+import BrandMark from '../components/brand/BrandMark';
 
 const profiles = [
   ['Facebook', company.social.facebook],
@@ -80,7 +81,8 @@ export default function Contact() {
             <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
               {profiles.map(([label, href]) => (
                 <li key={label}>
-                  <a href={href} className="link-inline inline-flex min-h-11 items-center">
+                  <a href={href} className="link-inline inline-flex min-h-11 items-center gap-2">
+                    <BrandMark name={label} className="h-5 w-5 shrink-0" />
                     {label}
                   </a>
                 </li>

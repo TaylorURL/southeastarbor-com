@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import SplitRail from '@taylorurl/split-rail';
 import { company } from '../../content/company';
+import BrandMark from '../brand/BrandMark';
 import { THEMES, useTheme } from '../../lib/theme';
 
 const profiles = [
@@ -78,9 +79,10 @@ export default function Footer() {
               <li key={label}>
                 <a
                   href={href}
-                  className="pressable inline-flex min-h-11 min-w-11 items-center justify-center hover:text-paper-50"
+                  aria-label={`Southeast Arbor Care on ${label}`}
+                  className="pressable inline-flex min-h-11 min-w-11 items-center justify-center hover:text-paper-50 active:opacity-80"
                 >
-                  {label}
+                  <BrandMark name={label} className="h-7 w-auto" />
                 </a>
               </li>
             ))}

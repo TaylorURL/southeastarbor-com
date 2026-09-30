@@ -5,6 +5,7 @@ import { breadcrumbSchema } from '../lib/structured-data';
 import PageHeader from '../components/sections/PageHeader';
 import ReviewCard from '../components/reviews/ReviewCard';
 import EstimateCta from '../components/sections/EstimateCta';
+import BrandMark from '../components/brand/BrandMark';
 
 const profiles = [
   { label: 'Google', href: company.social.google, note: 'The reviews on our map listing' },
@@ -47,7 +48,10 @@ export default function Reviews() {
           <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {profiles.map((profile) => (
               <div key={profile.label} className="card p-6">
-                <h3 className="display h3 text-link">{profile.label}</h3>
+                <h3 className="display h3 flex items-center gap-2 text-link">
+                  <BrandMark name={profile.label} className="h-6 w-6 shrink-0" />
+                  {profile.label}
+                </h3>
                 <p className="mt-1.5 text-[0.88rem] leading-relaxed text-body">{profile.note}</p>
                 <a href={profile.href} className="link-inline mt-3 inline-block text-[0.88rem]">
                   Read Them on {profile.label} →
