@@ -45,7 +45,7 @@ export default function Home() {
   }, []);
 
   useSeo({
-    title: 'Tree Removal in Pasadena, TX | Southeast Arbor Care',
+    title: 'Tree Removal & Trimming, Pasadena TX | Southeast Arbor Care',
     description:
       'Family-owned tree removal, trimming, stump grinding and storm cleanup in Pasadena, Deer Park, La Porte and Clear Lake. Since 2000.',
     path: '/',
@@ -288,8 +288,7 @@ export default function Home() {
               </h2>
             </div>
             <p className="max-w-2xl leading-relaxed text-body">
-              Three of them, in their own words. If we have worked in your yard, a review of your
-              own helps the next neighbor find us.
+              Three of them, in their own words.
             </p>
           </div>
           <div className="grid gap-5 md:grid-cols-3">

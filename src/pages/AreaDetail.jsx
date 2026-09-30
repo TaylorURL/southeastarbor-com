@@ -14,7 +14,7 @@ export default function AreaDetail() {
 
   useSeo(
     area && {
-      title: `Tree Service in ${area.name}, TX | Southeast Arbor`,
+      title: `${area.name}, TX Tree Service | Southeast Arbor Care`,
       description: `Tree removal, trimming, stump grinding and storm cleanup in ${area.name}, Texas. ${area.lede}`,
       path: `/service-areas/${area.slug}`,
       jsonLd: [

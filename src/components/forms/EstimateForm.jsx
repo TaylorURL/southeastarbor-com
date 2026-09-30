@@ -76,7 +76,7 @@ export default function EstimateForm({ compact = false }) {
                 id={`${field.id}-error`}
                 className="mt-2 text-[0.8rem] font-medium text-accent-ink"
               >
-                {field.label} is needed to call you back.
+                Fill this in so we can call you back.
               </p>
             )}
           </div>

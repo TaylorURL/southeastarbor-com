@@ -16,7 +16,7 @@ const profiles = [
 export default function Contact() {
   useSeo({
     title: 'Contact Southeast Arbor Care | Pasadena, TX',
-    description: `Call Southeast Arbor Care at ${company.phone}, Monday to Saturday 8 to 6. The shop is at ${company.address.street} in Pasadena, Texas.`,
+    description: `Call Southeast Arbor Care at ${company.phone}, Monday to Saturday 8 to 6. The shop is at ${company.address.street} in Pasadena, Texas. ${company.afterHoursNote}`,
     path: '/contact',
     jsonLd: [
       treeServiceSchema(areas.map((a) => a.name)),
@@ -32,7 +32,7 @@ export default function Contact() {
       <PageHeader
         eyebrow="Contact"
         title="The phone is the fastest way to reach us"
-        intro="Call during the hours below. For a quote in writing, the estimate form works just as well."
+        intro="Call during the hours below. For a quote in writing, use the estimate form."
         crumbs={[{ name: 'Home', path: '/' }]}
       />
 
@@ -77,7 +77,7 @@ export default function Contact() {
               <br />
               {company.address.city}, {company.address.state} {company.address.zip}
             </address>
-            <h3 className="mt-6 label">Find us on</h3>
+            <h3 className="mt-6 label">Find Us on</h3>
             <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
               {profiles.map(([label, href]) => (
                 <li key={label}>

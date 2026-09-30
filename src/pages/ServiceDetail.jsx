@@ -15,7 +15,7 @@ export default function ServiceDetail() {
 
   useSeo(
     service && {
-      title: `${service.name} in Pasadena, TX | Southeast Arbor`,
+      title: `${service.name} in Pasadena, TX | Southeast Arbor Care`,
       description: service.short,
       path: `/services/${service.slug}`,
       jsonLd: [

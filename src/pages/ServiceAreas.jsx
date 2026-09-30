@@ -8,7 +8,7 @@ import EstimateCta from '../components/sections/EstimateCta';
 
 export default function ServiceAreas() {
   useSeo({
-    title: 'Tree Service Areas Around Pasadena, TX | Southeast Arbor',
+    title: 'Tree Service Areas Near Pasadena, TX | Southeast Arbor Care',
     description:
       'Southeast Arbor Care works Pasadena, Deer Park, La Porte, Clear Lake and Webster, Baytown and southeast Houston. One page for each, with what the trees there actually need.',
     path: '/service-areas',
