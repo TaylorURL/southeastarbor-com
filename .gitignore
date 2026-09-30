@@ -24,6 +24,7 @@ INTELLIGENCE.md
 Thumbs.db
 desktop.ini
 dist
+dist-ssr
 id_ed25519
 id_rsa
 node_modules

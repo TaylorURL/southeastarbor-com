@@ -1,12 +1,13 @@
 import { gallery, photoCredit } from '../content/gallery';
 import { useSeo } from '../lib/seo';
 import { breadcrumbSchema } from '../lib/structured-data';
+import Photo from '../components/Photo';
 import PhotoHero from '../components/sections/PhotoHero';
 import EstimateCta from '../components/sections/EstimateCta';
 
 export default function OurWork() {
   useSeo({
-    title: 'Our Work — Tree Removal & Trimming Photos | Southeast Arbor Care',
+    title: 'Our Work: Tree Removal and Trimming | Southeast Arbor',
     description:
       'Photographs of the work: sectional takedowns, rigging over structures, storm response, stump grinding and clearance pruning across southeast Harris County.',
     path: '/our-work',
@@ -38,28 +39,27 @@ export default function OurWork() {
               className={`group ${i % 5 === 0 ? 'sm:col-span-2 lg:col-span-2' : ''}`}
             >
               <div
-                className={`overflow-hidden bg-paper-100 ${
+                className={`overflow-hidden bg-raised ${
                   i % 5 === 0 ? 'aspect-[16/10]' : 'aspect-[4/3]'
                 }`}
               >
-                <img
+                <Photo
                   src={shot.src}
                   alt={shot.alt}
-                  loading={i < 3 ? 'eager' : 'lazy'}
-                  decoding="async"
+                  sizes="(min-width: 1024px) 66vw, (min-width: 640px) 50vw, 100vw"
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                 />
               </div>
               <figcaption className="mt-3">
-                <span className="block display h3 text-bark-900">{shot.caption}</span>
-                <span className="mt-1 block text-[0.92rem] leading-relaxed text-ink-700">
+                <span className="block display h3 text-heading">{shot.caption}</span>
+                <span className="mt-1 block text-[0.92rem] leading-relaxed text-body">
                   {shot.note}
                 </span>
               </figcaption>
             </figure>
           ))}
         </div>
-        <p className="shell mt-10 text-[0.8rem] italic text-ink-700">{photoCredit}</p>
+        <p className="shell mt-10 text-[0.8rem] italic text-body">{photoCredit}</p>
       </section>
 
       <EstimateCta />

@@ -17,7 +17,7 @@ export default function StormBanner() {
         </p>
         <a
           href={`tel:${company.phoneHref}`}
-          className="mono text-[0.86rem] font-semibold underline underline-offset-4"
+          className="pressable mono text-[0.86rem] font-semibold underline underline-offset-4 hover:no-underline"
         >
           Call {company.phone}
         </a>

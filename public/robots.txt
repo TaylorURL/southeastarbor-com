@@ -1,2 +1,17 @@
+# Search engines and AI assistants are both welcome to read the site. A
+# homeowner asking an assistant for a tree service in Pasadena should be able
+# to get this company's number back from it.
 User-agent: *
 Allow: /
+
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: PerplexityBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://southeastarbor.com/sitemap.xml

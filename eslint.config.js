@@ -5,7 +5,7 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 
 export default [
-  { ignores: ['dist', 'node_modules', '.claude'] },
+  { ignores: ['dist', 'dist-ssr', 'node_modules', '.claude'] },
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
@@ -31,5 +31,10 @@ export default [
       'react/prop-types': 'off',
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     },
+  },
+  {
+    // The build scripts run under Node rather than in a browser.
+    files: ['scripts/**/*.js'],
+    languageOptions: { globals: { ...globals.node } },
   },
 ];
