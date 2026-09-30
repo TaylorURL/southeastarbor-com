@@ -61,8 +61,8 @@ export default function Contact() {
           <div className="card p-7">
             <h2 className="display h3 text-heading">Get a quote in writing</h2>
             <p className="mt-3 leading-relaxed text-body">
-              Tell us where the tree is and what it is doing, and we call back with a number or a
-              time to come and look at it.
+              Tell us where the tree is and what it is doing. We call back with a number or a time
+              to come look.
             </p>
             <Link to="/free-estimate" className="btn btn-primary mt-5">
               Get a Free Estimate

@@ -43,9 +43,7 @@ export default function Reviews() {
             ))}
           </div>
 
-          <h2 className="mt-14 display h2 text-heading">
-            Where to read them, and where to leave one
-          </h2>
+          <h2 className="mt-14 display h2 text-heading">Where to read them and leave one</h2>
           <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {profiles.map((profile) => (
               <div key={profile.label} className="card p-6">

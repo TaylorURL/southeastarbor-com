@@ -12,15 +12,18 @@ function Stars({ count = 5 }) {
   );
 }
 
-/** One published review, the same card wherever reviews are shown. */
-export default function ReviewCard({ review }) {
+/**
+ * One published review, the same card wherever reviews are shown. `short` shows
+ * the cut a review carries for a page that quotes it in passing.
+ */
+export default function ReviewCard({ review, short = false }) {
   return (
-    <figure className="card flex flex-col p-7">
+    <figure className="card flex flex-col gap-5 p-7">
       <Stars />
-      <blockquote className="mt-4 flex-1 text-[1.02rem] leading-relaxed text-heading">
-        {review.quote}
+      <blockquote className="flex-1 text-[1.02rem] leading-relaxed text-heading">
+        {short ? (review.snippet ?? review.quote) : review.quote}
       </blockquote>
-      <figcaption className="mono mt-5 text-[0.78rem] uppercase tracking-[0.1em] text-body">
+      <figcaption className="mono text-[0.78rem] uppercase tracking-[0.1em] text-body">
         {review.author} · {review.where}
       </figcaption>
     </figure>

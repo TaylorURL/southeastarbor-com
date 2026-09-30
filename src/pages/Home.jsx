@@ -72,7 +72,7 @@ export default function Home() {
         <div className="shell grid grid-cols-2 gap-x-6 gap-y-7 py-9 md:grid-cols-5">
           {proof.map(([figure, unit, note]) => (
             <div key={note}>
-              <p className="flex items-baseline gap-1.5">
+              <p className="flex items-baseline gap-2">
                 <span className="mono text-[1.85rem] font-semibold leading-none text-paper-50">
                   {figure}
                 </span>
@@ -95,62 +95,64 @@ export default function Home() {
               </h2>
             </div>
             <p className="text-[1.05rem] leading-relaxed text-body">
-              Every job is quoted in person, in writing, before anybody starts a saw. If a tree can
-              be saved we will tell you so — we would rather trim it twice than take it down once.
+              Every job is quoted in person, in writing, before a saw starts. We would rather trim a
+              tree twice than take it down once.
             </p>
           </div>
 
-          <div className="mt-10 grid gap-5 md:grid-cols-2">
-            {featured.map((service) => (
-              <Link
-                key={service.slug}
-                to={`/services/${service.slug}`}
-                className="pressable group relative isolate flex min-h-[340px] flex-col justify-end overflow-hidden rounded-[4px] bg-bark-900 p-7 hover:ring-2 hover:ring-rigging-500 active:opacity-90"
-              >
-                <Photo
-                  src={service.image}
-                  alt={service.alt}
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                  className="absolute inset-0 -z-10 h-full w-full object-cover transition-transform duration-[600ms] group-hover:scale-[1.05]"
-                />
-                <div className="scrim-card absolute inset-0 -z-10" />
-                {service.urgent && (
-                  <span className="mono absolute left-0 top-6 bg-rigging-500 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-white">
-                    Answered after hours
-                  </span>
-                )}
-                <h3 className="display h2 text-paper-50">{service.name}</h3>
-                <p className="mt-2.5 max-w-sm text-[0.98rem] leading-relaxed text-moss-200">
-                  {service.short}
-                </p>
-                <span className="mono mt-4 text-[0.78rem] uppercase tracking-[0.12em] text-rigging-200">
-                  See {service.name} →
-                </span>
-              </Link>
-            ))}
-          </div>
-
-          <ul className="mt-5 divide-y divide-line border-y border-line">
-            {rest.map((service, i) => (
-              <li key={service.slug}>
+          <div className="mt-10 flex flex-col gap-5">
+            <div className="grid gap-5 md:grid-cols-2">
+              {featured.map((service) => (
                 <Link
+                  key={service.slug}
                   to={`/services/${service.slug}`}
-                  className="pressable group grid grid-cols-[auto_1fr] items-center gap-x-5 gap-y-1 py-5 hover:bg-raised active:opacity-90 sm:grid-cols-[auto_minmax(0,14rem)_1fr_auto]"
+                  className="pressable group relative isolate flex min-h-[340px] flex-col justify-end overflow-hidden rounded-[4px] bg-bark-900 p-7 hover:ring-2 hover:ring-rigging-500 active:opacity-90"
                 >
-                  <span className="mono text-[0.78rem] text-rigging-500">
-                    {String(i + 3).padStart(2, '0')}
-                  </span>
-                  <span className="display h3 text-heading group-hover:text-link">
-                    {service.name}
-                  </span>
-                  <span className="col-span-2 text-[0.95rem] leading-relaxed text-body sm:col-span-1">
+                  <Photo
+                    src={service.image}
+                    alt={service.alt}
+                    sizes="(min-width: 768px) 50vw, 100vw"
+                    className="absolute inset-0 -z-10 h-full w-full object-cover transition-transform duration-[600ms] group-hover:scale-[1.05]"
+                  />
+                  <div className="scrim-card absolute inset-0 -z-10" />
+                  {service.urgent && (
+                    <span className="mono absolute left-0 top-6 bg-rigging-500 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-white">
+                      Answered after hours
+                    </span>
+                  )}
+                  <h3 className="display h2 text-paper-50">{service.name}</h3>
+                  <p className="mt-2 max-w-sm text-[0.98rem] leading-relaxed text-moss-200">
                     {service.short}
+                  </p>
+                  <span className="mono mt-4 text-[0.78rem] uppercase tracking-[0.12em] text-rigging-200">
+                    See {service.name} →
                   </span>
-                  <span className="mono hidden text-[0.78rem] text-link sm:block">→</span>
                 </Link>
-              </li>
-            ))}
-          </ul>
+              ))}
+            </div>
+
+            <ul className="divide-y divide-line border-y border-line">
+              {rest.map((service, i) => (
+                <li key={service.slug}>
+                  <Link
+                    to={`/services/${service.slug}`}
+                    className="pressable group grid grid-cols-[auto_1fr] items-center gap-x-5 gap-y-1 py-5 hover:bg-raised active:opacity-90 sm:grid-cols-[auto_minmax(0,14rem)_1fr_auto]"
+                  >
+                    <span className="mono text-[0.78rem] text-rigging-500">
+                      {String(i + 3).padStart(2, '0')}
+                    </span>
+                    <span className="display h3 text-heading group-hover:text-link">
+                      {service.name}
+                    </span>
+                    <span className="col-span-2 text-[0.95rem] leading-relaxed text-body sm:col-span-1">
+                      {service.short}
+                    </span>
+                    <span className="mono hidden text-[0.78rem] text-link sm:block">→</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </section>
 
@@ -169,14 +171,14 @@ export default function Home() {
         />
         <div className="absolute inset-0 bg-bark-950/60" />
         <div className="shell relative grid gap-10 py-20 md:py-28 lg:grid-cols-2 lg:items-center">
-          <div>
-            <p className="eyebrow eyebrow-light">How the day goes</p>
-            <h2 className="display h1 mt-4 text-paper-50">
-              We show up, it comes down, the yard gets raked.
-            </h2>
-            <p className="mt-5 max-w-lg text-lg leading-relaxed text-moss-200">
-              No subcontractors, no second trip for the brush, no invoice with a line on it that was
-              not in the quote. {yearsInBusiness} years of doing it the same way.
+          <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-3">
+              <p className="eyebrow eyebrow-light">How the day goes</p>
+              <h2 className="display h1 text-paper-50">It comes down, and the yard gets raked.</h2>
+            </div>
+            <p className="max-w-lg text-lg leading-relaxed text-moss-200">
+              No subcontractors, no second trip for the brush, no invoice line that was not quoted.{' '}
+              {yearsInBusiness} years of doing it the same way.
             </p>
           </div>
           <ol className="grid gap-px overflow-hidden rounded-[4px] bg-canopy-800 sm:grid-cols-2">
@@ -186,12 +188,12 @@ export default function Home() {
               ['Rig it', 'Roped down in sections wherever a free drop is not safe.'],
               ['Clear it', 'Chipper on site. Brush and rounds leave with us.'],
             ].map(([step, detail], i) => (
-              <li key={step} className="bg-bark-950/85 p-6">
-                <span className="mono text-[0.76rem] font-semibold text-rigging-500">
+              <li key={step} className="flex flex-col gap-2 bg-bark-950/85 p-6">
+                <span className="mono text-[0.76rem] font-semibold leading-none text-rigging-500">
                   {String(i + 1).padStart(2, '0')}
                 </span>
-                <h3 className="display h3 mt-2 text-paper-50">{step}</h3>
-                <p className="mt-2 text-[0.9rem] leading-relaxed text-moss-200">{detail}</p>
+                <h3 className="display h3 text-paper-50">{step}</h3>
+                <p className="text-[0.9rem] leading-relaxed text-moss-200">{detail}</p>
               </li>
             ))}
           </ol>
@@ -211,7 +213,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {gallery.slice(0, 4).map((shot) => (
               <figure key={shot.src} className="group">
                 <div className="aspect-[4/5] overflow-hidden bg-raised">
@@ -237,14 +239,16 @@ export default function Home() {
       {/* ---- where we work ---- */}
       <section className="below-fold border-y border-line bg-raised py-16 md:py-24">
         <div className="shell">
-          <div className="max-w-2xl">
-            <p className="eyebrow">Where we work</p>
-            <h2 className="display h1 mt-3 text-heading">
-              Everything inside a morning of the Thornwood yard
-            </h2>
-            <p className="mt-5 text-[1.05rem] leading-relaxed text-body">
-              Six towns, and a page for each one. The shop is on Thornwood Drive, which is why
-              Pasadena and Deer Park calls usually get looked at the same week.
+          <div className="flex max-w-2xl flex-col gap-5">
+            <div className="flex flex-col gap-3">
+              <p className="eyebrow">Where we work</p>
+              <h2 className="display h1 text-heading">
+                Everything inside a morning of the Thornwood yard
+              </h2>
+            </div>
+            <p className="text-[1.05rem] leading-relaxed text-body">
+              Six towns, and a page for each one. The shop is on Thornwood Drive, so Pasadena and
+              Deer Park get a visit the same week.
             </p>
           </div>
 
@@ -265,8 +269,8 @@ export default function Home() {
                 <p className="mono text-[0.72rem] uppercase tracking-[0.14em] text-rigging-200">
                   {area.zips}
                 </p>
-                <h3 className="display h2 mt-1.5 text-paper-50">{area.name}</h3>
-                <p className="mt-1.5 text-[0.88rem] leading-snug text-moss-200">{area.lede}</p>
+                <h3 className="display h2 mt-2 text-paper-50">{area.name}</h3>
+                <p className="mt-2 text-[0.88rem] leading-snug text-moss-200">{area.lede}</p>
               </Link>
             ))}
           </div>
@@ -275,18 +279,22 @@ export default function Home() {
 
       {/* ---- reviews ---- */}
       <section className="below-fold py-16 md:py-24">
-        <div className="shell">
-          <p className="eyebrow">What neighbors say</p>
-          <h2 className="display h1 mt-3 max-w-3xl text-heading">
-            {reviewTotals.label}, and a five-star average on every one of them.
-          </h2>
-          <p className="mt-4 max-w-2xl leading-relaxed text-body">
-            Three of them, word for word. If we have worked in your yard, a review of your own helps
-            the next neighbor find us.
-          </p>
-          <div className="mt-9 grid gap-5 md:grid-cols-3">
+        <div className="shell flex flex-col gap-10">
+          <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-3">
+              <p className="eyebrow">What neighbors say</p>
+              <h2 className="display h1 max-w-3xl text-heading">
+                {reviewTotals.label}, every one of them five stars.
+              </h2>
+            </div>
+            <p className="max-w-2xl leading-relaxed text-body">
+              Three of them, in their own words. If we have worked in your yard, a review of your
+              own helps the next neighbor find us.
+            </p>
+          </div>
+          <div className="grid gap-5 md:grid-cols-3">
             {reviews.map((review) => (
-              <ReviewCard key={review.author} review={review} />
+              <ReviewCard key={review.author} review={review} short />
             ))}
           </div>
         </div>
@@ -301,9 +309,7 @@ export default function Home() {
         />
         <div className="shell relative grid gap-10 py-16 md:py-24 lg:grid-cols-[1fr_440px] lg:items-center">
           <div>
-            <h2 className="display h1 text-paper-50">
-              Send us a photo of the tree, and we call with a number the same day.
-            </h2>
+            <h2 className="display h1 text-paper-50">Send a photo. We quote it same day.</h2>
             <p className="mt-5 max-w-lg text-lg leading-relaxed text-moss-200">
               Estimates are free and there is no charge until the work is finished and the yard is
               clean. {company.afterHoursNote}

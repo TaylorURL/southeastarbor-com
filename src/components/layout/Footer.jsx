@@ -39,8 +39,8 @@ function ThemeSwitch() {
  */
 export default function Footer() {
   return (
-    <footer className="bg-bark-950 pb-[calc(3.5rem+env(safe-area-inset-bottom,0px))] text-moss-200 sm:pb-0">
-      <div className="shell py-14">
+    <footer className="bg-bark-950 pb-[calc(3.5rem+env(safe-area-inset-bottom,0px))] pt-14 text-moss-200 sm:pb-4">
+      <div className="shell pb-14">
         <div className="flex flex-col gap-8 border-b border-canopy-800 pb-10 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="font-display text-[1.6rem] font-extrabold tracking-[0.22em] text-paper-50">
