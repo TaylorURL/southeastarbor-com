@@ -68,7 +68,7 @@ const GROUPS = [
           {
             to: '/about',
             label: 'About',
-            line: `Family owned in Pasadena since ${company.foundedYear}, one crew and one owner.`,
+            line: `Family owned in Pasadena since ${company.foundedYear}.`,
           },
           {
             to: '/our-work',
