@@ -17,24 +17,15 @@ export default function NotFound() {
       intro={
         <>
           Try{' '}
-          <Link
-            to="/services"
-            className="font-semibold text-canopy-700 underline underline-offset-2"
-          >
+          <Link to="/services" className="link-inline">
             services
           </Link>
           ,{' '}
-          <Link
-            to="/service-areas"
-            className="font-semibold text-canopy-700 underline underline-offset-2"
-          >
+          <Link to="/service-areas" className="link-inline">
             service areas
           </Link>
           , or{' '}
-          <Link
-            to="/free-estimate"
-            className="font-semibold text-canopy-700 underline underline-offset-2"
-          >
+          <Link to="/free-estimate" className="link-inline">
             a free estimate
           </Link>
           .

@@ -1,0 +1,14 @@
+{
+  "name": "Southeast Arbor Care",
+  "short_name": "Southeast Arbor",
+  "description": "Tree removal, trimming and stump grinding in Pasadena, Texas.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#faf8f3",
+  "theme_color": "#111a14",
+  "icons": [
+    { "src": "/favicon.svg", "type": "image/svg+xml", "sizes": "any" },
+    { "src": "/apple-touch-icon.png", "type": "image/png", "sizes": "180x180" },
+    { "src": "/icon-512.png", "type": "image/png", "sizes": "512x512" }
+  ]
+}

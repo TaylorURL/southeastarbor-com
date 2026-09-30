@@ -13,7 +13,9 @@ import { reviewTotals } from '../content/reviews.js';
 export function treeServiceSchema(areaNames = []) {
   const schema = {
     '@context': 'https://schema.org',
-    '@type': 'TreeService',
+    // TreeService is a LocalBusiness to schema.org; naming both lets a reader
+    // that only knows the base type still see a business.
+    '@type': ['TreeService', 'LocalBusiness'],
     '@id': `${company.url}/#business`,
     name: company.legalName,
     url: company.url,
@@ -78,5 +80,17 @@ export function breadcrumbSchema(trail) {
       name: item.name,
       item: `${company.url}${item.path}`,
     })),
+  };
+}
+
+/** The site itself, named as the business names itself, and who publishes it. */
+export function websiteSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${company.url}/#website`,
+    name: company.name,
+    url: company.url,
+    publisher: { '@id': `${company.url}/#business` },
   };
 }

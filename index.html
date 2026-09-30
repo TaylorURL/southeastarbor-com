@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#111a14" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script>
+      // A stored theme is applied before the first paint, so the page never
+      // flashes light on its way to dark.
+      try {
+        var theme = localStorage.getItem('theme');
+        if (theme === 'light' || theme === 'dark' || theme === 'gray')
+          document.documentElement.setAttribute('data-theme', theme);
+      } catch (ignored) {}
+    </script>
     <link
       rel="preload"
       href="/fonts/archivo-latin-variable.woff2"
@@ -19,11 +28,30 @@
       type="font/woff2"
       crossorigin
     />
-    <title>Tree Removal & Tree Service in Pasadena, TX | Southeast Arbor Care</title>
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <!-- The error reporter and the traffic counter both call out after the page
+         has loaded; resolving their hosts early keeps that off the critical path. -->
+    <link rel="dns-prefetch" href="https://sunday.tail1f78d7.ts.net" />
+    <link rel="dns-prefetch" href="https://gujgtjqqurildqurpffh.supabase.co" />
+    <!-- The build replaces this block on every page with that page's own head. -->
+    <!--route-head-->
+    <title>Tree Removal in Pasadena, TX | Southeast Arbor Care</title>
     <meta
       name="description"
       content="Family-owned tree removal, trimming, stump grinding and storm cleanup in Pasadena, Deer Park, La Porte and Clear Lake. Since 2000."
     />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Tree Removal in Pasadena, TX | Southeast Arbor Care" />
+    <meta
+      property="og:description"
+      content="Family-owned tree removal, trimming, stump grinding and storm cleanup in Pasadena, Deer Park, La Porte and Clear Lake. Since 2000."
+    />
+    <meta property="og:url" content="https://southeastarbor.com" />
+    <meta property="og:image" content="https://southeastarbor.com/og.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://southeastarbor.com" />
+    <!--/route-head-->
     <script>
       (function () {
         var endpoint = 'https://sunday.tail1f78d7.ts.net/report';
@@ -278,9 +306,14 @@
     </script>
     <!-- Traffic analytics. The site key is public by design: it says which
          site a hit belongs to, and the collector accepts it only from this
-         site's own origins. Deferred, so nothing on the page waits for it. -->
+         site's own origins. Deferred, so nothing on the page waits for it.
+         The privacy page describes what it records. -->
     <script>
       addEventListener('load', function () {
+        // A visitor who switched the counter off on the privacy page stays uncounted.
+        try {
+          if (localStorage.getItem('visits-uncounted') === '1') return;
+        } catch (ignored) {}
         var tracker = document.createElement('script');
         tracker.src = 'https://gujgtjqqurildqurpffh.supabase.co/functions/v1/analytics-tracker';
         tracker.dataset.site = 'sa_59b183ceec3f75071b857c7c769c5bcc';

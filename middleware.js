@@ -46,25 +46,31 @@ const PAGE = `<!doctype html>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
-    <title>Temporarily unavailable</title>
+    <title>Temporarily Unavailable | Southeast Arbor Care</title>
     <style>
-      :root { color-scheme: light dark; }
-      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #fafafa; color: #1a1a1a; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
-      main { max-width: 32rem; padding: 2rem 1.5rem; text-align: center; }
-      h1 { margin: 0 0 0.75rem; font-size: 1.5rem; line-height: 1.3; }
-      p { margin: 0 0 1rem; color: #4a4a4a; line-height: 1.6; }
-      .owner { font-size: 0.875rem; color: #6a6a6a; }
-      a { color: inherit; }
-      @media (prefers-color-scheme: dark) {
-        body { background: #141414; color: #f0f0f0; }
-        p { color: #c4c4c4; }
-        .owner { color: #9a9a9a; }
+      @font-face { font-family: 'Archivo'; font-weight: 100 900; font-display: swap; src: url('/fonts/archivo-latin-variable.woff2') format('woff2'); }
+      @font-face { font-family: 'Inter'; font-weight: 100 900; font-display: swap; src: url('/fonts/inter-latin-variable.woff2') format('woff2'); }
+      :root {
+        color-scheme: light dark;
+        --ground: #faf8f3;
+        --heading: #16201a;
+        --body: #3c4640;
+        --faint: #5d665f;
       }
+      @media (prefers-color-scheme: dark) {
+        :root { --ground: #0e1511; --heading: #f2efe6; --body: #c3cfc6; --faint: #9aa79e; }
+      }
+      body { margin: 0; min-height: 100dvh; display: grid; place-items: center; gap: 1rem; background: var(--ground); color: var(--heading); font-family: 'Inter', sans-serif; }
+      main { max-width: 32rem; padding: 2rem 1.5rem; text-align: center; display: flex; flex-direction: column; gap: 1rem; }
+      h1 { margin: 0; font-family: 'Archivo', sans-serif; font-weight: 800; letter-spacing: -0.02em; font-size: 1.6rem; line-height: 1.2; overflow-wrap: anywhere; }
+      p { margin: 0; color: var(--body); line-height: 1.6; }
+      .owner { font-size: 0.875rem; color: var(--faint); }
+      a { color: inherit; }
     </style>
   </head>
   <body>
     <main>
-      <h1>This site is temporarily unavailable</h1>
+      <h1>Southeast Arbor Care is temporarily unavailable</h1>
       <p>Please check back soon.</p>
       <p class="owner">If this is your website, call TaylorURL at <a href="tel:+12818628687">(281) 862-8687</a>.</p>
     </main>
