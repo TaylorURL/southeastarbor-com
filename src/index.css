@@ -117,7 +117,10 @@
   --selection: var(--rigging-200);
   color-scheme: light;
 
-  --header-height: 4.5rem;
+  /* The bar is the part that stays docked, so it is what the page clears. */
+  --strip-height: 2.25rem;
+  --bar-height: 4rem;
+  --header-height: var(--bar-height);
   --shell-width: 1280px;
 
   /* One motion vocabulary: a quick answer to a press or a hover, and a slide
@@ -126,6 +129,11 @@
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --motion-quick: 200ms;
   --motion-slide: 260ms;
+
+  /* Navigation keeps its own timings: a panel opens a little slower than a
+     hover answers. */
+  --nav-open: var(--motion-slide);
+  --nav-ease: var(--ease-out);
 
   /* The contour rule and the one shadow. */
   --contour-line: rgba(47, 102, 65, 0.055);
@@ -194,6 +202,9 @@ html {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  :root {
+    --nav-open: 0ms;
   }
   *,
   *::before,
@@ -538,41 +549,34 @@ summary {
     caret-color: var(--heading);
   }
 
-  /* The header: a status strip over the bar. Both ride together; scrolling down
-     slides the pair up by the strip's height so only the bar stays docked, and
-     the first scroll back up brings the strip back. Once anything is under it
-     the bar takes its hairline and shadow. */
-  .site-header {
-    --strip-height: 2.25rem;
-    position: sticky;
-    top: 0;
-    z-index: var(--z-header);
-    background: var(--ground);
-    box-shadow: 0 1px 0 var(--line);
-    transform: translateY(0);
-    transition: transform var(--motion-slide) var(--ease-out);
-  }
-  .site-header[data-compact='true'] {
-    transform: translateY(calc(var(--strip-height) * -1));
-  }
-  .site-header__strip {
+  /* nav: n12-banner-retract · banner content: status · dismiss: none · retract:
+     scroll-away. The status strip sits in the page's flow above one sticky bar,
+     so scrolling down carries it off and leaves the bar docked alone; it is
+     back as soon as the top of the page is. */
+  .utility-bar {
     height: var(--strip-height);
-    display: flex;
-    align-items: center;
-    gap: 1rem;
     background: var(--bark-950);
     font-size: 0.78rem;
   }
-  .site-header__bar {
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    height: var(--bar-height);
     background: var(--ground);
     border-bottom: 1px solid transparent;
     transition:
       border-color var(--motion-quick) var(--ease-out),
       box-shadow var(--motion-quick) var(--ease-out);
   }
-  .site-header[data-scrolled='true'] .site-header__bar {
+  .site-header[data-scrolled='true'] {
     border-bottom-color: var(--line);
     box-shadow: var(--shadow-bar);
+  }
+  /* An open panel continues the bar: no rule at the join, one shadow under both. */
+  .site-header[data-open='true'] {
+    border-bottom-color: transparent;
+    box-shadow: none;
   }
 
   .nav-link {
@@ -589,10 +593,22 @@ summary {
     transform: rotate(180deg);
   }
 
-  .nav-panel {
-    border-top: 1px solid var(--line);
+  /* Panel: mm2-two-column-split. The bar's own surface, dropped over the page
+     rather than pushing it down, opaque whatever sits behind it. */
+  .nav-surface {
+    position: absolute;
+    inset: 100% 0 auto;
     background: var(--ground);
-    animation: arrive var(--motion-quick) var(--ease-out);
+    border-bottom: 1px solid var(--line);
+    box-shadow: var(--shadow-bar);
+    animation: nav-open var(--nav-open) var(--nav-ease) both;
+  }
+  .nav-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-header) - 1);
+    background: color-mix(in srgb, var(--bark-950) 45%, transparent);
+    animation: nav-fade var(--nav-open) var(--nav-ease) both;
   }
 
   /* A section below the first screen is not laid out until it is near the
@@ -608,10 +624,6 @@ summary {
     content-visibility: auto;
     contain-intrinsic-size: auto 720px;
   }
-
-  .mobile-nav {
-    border-top: 1px solid var(--line);
-  }
 }
 
 :root {
@@ -622,14 +634,17 @@ summary {
   --z-spark: 60;
 }
 
-@keyframes arrive {
+/* Movement only: a panel is readable from its first frame, so it never depends
+   on a fade finishing to be seen. */
+@keyframes nav-open {
+  from {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes nav-fade {
   from {
     opacity: 0;
-    transform: translateY(-4px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
   }
 }
 
@@ -640,7 +655,7 @@ summary {
   height: 2.25rem;
   margin: -1.125rem 0 0 -1.125rem;
   border: 2px solid var(--rigging-500);
-  border-radius: 9999px;
+  border-radius: 50%;
   pointer-events: none;
   animation: spark var(--motion-slide) var(--ease-out) forwards;
 }

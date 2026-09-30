@@ -20,6 +20,7 @@ export default function PhotoHero({
 }) {
   return (
     <section
+      data-hero
       className={`relative isolate flex flex-col justify-center overflow-hidden bg-bark-900 ${
         compact ? 'min-h-[380px] md:min-h-[440px]' : 'min-h-[540px] md:min-h-[680px]'
       }`}

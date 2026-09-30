@@ -56,10 +56,7 @@ export default function EstimateForm({ compact = false }) {
       <div className="space-y-4">
         {fields.map((field) => (
           <div key={field.id}>
-            <label
-              htmlFor={field.id}
-              className="mb-1.5 block text-[0.82rem] font-semibold text-body"
-            >
+            <label htmlFor={field.id} className="mb-2 block text-[0.82rem] font-semibold text-body">
               {field.label}
             </label>
             <input
@@ -77,7 +74,7 @@ export default function EstimateForm({ compact = false }) {
             {invalid[field.id] && (
               <p
                 id={`${field.id}-error`}
-                className="mt-1.5 text-[0.8rem] font-medium text-accent-ink"
+                className="mt-2 text-[0.8rem] font-medium text-accent-ink"
               >
                 {field.label} is needed to call you back.
               </p>
@@ -85,7 +82,7 @@ export default function EstimateForm({ compact = false }) {
           </div>
         ))}
         <div>
-          <label htmlFor="work" className="mb-1.5 block text-[0.82rem] font-semibold text-body">
+          <label htmlFor="work" className="mb-2 block text-[0.82rem] font-semibold text-body">
             What Needs Doing?
           </label>
           <textarea id="work" name="work" rows={4} className="field" />
@@ -94,7 +91,7 @@ export default function EstimateForm({ compact = false }) {
           <label htmlFor="photo" className="block text-[0.82rem] font-semibold text-body">
             Photo of the Tree
           </label>
-          <p id="photo-help" className="mb-1.5 mt-1.5 text-[0.78rem] text-body">
+          <p id="photo-help" className="mb-2 mt-2 text-[0.78rem] text-body">
             Optional, and the fastest route to a real number.
           </p>
           <input

@@ -61,8 +61,8 @@ function headTags(head, body) {
 // bundle nothing. A module script and its preloads still start downloading as
 // soon as the parser meets them, and on a phone connection that download
 // competes with the hero photograph and the two faces the headline waits on.
-// So the bundle is asked for one frame after the first paint, and its chunks
-// are not preloaded ahead of it.
+// So the bundle is asked for one frame after the first paint, or 300ms in
+// where no frame is drawn, and its chunks are not preloaded ahead of it.
 //
 // A document held open across a deploy names a bundle the next deploy removed;
 // the page it holds still reads perfectly, so a failed load reloads once for
@@ -83,7 +83,17 @@ const boot = (src) =>
             if (!spent) location.reload();
           },
         );
-      requestAnimationFrame(() => requestAnimationFrame(start));
+      // A frame never comes in a tab that opened in the background or a page
+      // being throttled, so a timer stands behind it and whichever fires first
+      // starts the bundle; the controls are never left waiting on a paint.
+      let started = false;
+      const once = () => {
+        if (started) return;
+        started = true;
+        start();
+      };
+      setTimeout(once, 300);
+      requestAnimationFrame(() => requestAnimationFrame(once));
     </script>`;
 
 const paintFirst = (html) =>

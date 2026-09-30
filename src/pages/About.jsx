@@ -32,22 +32,20 @@ export default function About() {
             <p>
               We are not a franchise and we are not a call centre that subcontracts the work out.
             </p>
+            <p>The person who quotes the job is on site the day it happens.</p>
+            <p>The crew has been together long enough that nobody needs telling twice.</p>
+            <p>What that buys you is boring in the best way.</p>
             <p>
-              The person who quotes the job is on site the day it happens, and the crew has been
-              together long enough that nobody needs telling twice.
-            </p>
-            <p>
-              What that buys you is boring in the best way. The truck arrives when it was supposed
-              to. The tree comes down in the direction we said it would.
+              The truck arrives when it was supposed to. The tree comes down in the direction we
+              said it would.
             </p>
             <p>
               The yard gets raked. Nothing gets left for a second trip, and nothing gets invoiced
               that was not quoted.
             </p>
+            <p>We work in heavy clay and a high water table, under hurricane season.</p>
             <p>
-              We work in heavy clay and a high water table, under hurricane season, in neighborhoods
-              where the houses went up around trees that are now much bigger than anyone planned
-              for.
+              The houses here went up around trees that are now much bigger than anyone planned for.
             </p>
             <p>
               That is a specific set of problems, and {yearsInBusiness} years of it is most of what
@@ -55,8 +53,8 @@ export default function About() {
             </p>
             <p>
               You do not pay anything until the work is finished and you have walked it with us.
-              That has been the arrangement since {company.foundedYear} and it is not changing.
             </p>
+            <p>That has been the arrangement since {company.foundedYear} and it is not changing.</p>
           </div>
 
           <aside className="space-y-5">

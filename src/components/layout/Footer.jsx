@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import SplitRail from '@taylorurl/split-rail';
 import { company } from '../../content/company';
+import BrandMark from '../brand/BrandMark';
 import { THEMES, useTheme } from '../../lib/theme';
 
 const profiles = [
@@ -39,8 +40,8 @@ function ThemeSwitch() {
  */
 export default function Footer() {
   return (
-    <footer className="bg-bark-950 pb-[calc(3.5rem+env(safe-area-inset-bottom,0px))] text-moss-200 sm:pb-0">
-      <div className="shell py-14">
+    <footer className="bg-bark-950 pb-[calc(3.5rem+env(safe-area-inset-bottom,0px))] pt-14 text-moss-200 sm:pb-4">
+      <div className="shell pb-14">
         <div className="flex flex-col gap-8 border-b border-canopy-800 pb-10 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="font-display text-[1.6rem] font-extrabold tracking-[0.22em] text-paper-50">
@@ -78,9 +79,10 @@ export default function Footer() {
               <li key={label}>
                 <a
                   href={href}
-                  className="pressable inline-flex min-h-11 min-w-11 items-center justify-center hover:text-paper-50"
+                  aria-label={`Southeast Arbor Care on ${label}`}
+                  className="pressable inline-flex min-h-11 min-w-11 items-center justify-center hover:text-paper-50 active:opacity-80"
                 >
-                  {label}
+                  <BrandMark name={label} className="h-7 w-auto" />
                 </a>
               </li>
             ))}

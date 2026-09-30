@@ -7,6 +7,7 @@ import { useSeo } from '../lib/seo';
 import { breadcrumbSchema, serviceSchema } from '../lib/structured-data';
 import PhotoHero from '../components/sections/PhotoHero';
 import EstimateForm from '../components/forms/EstimateForm';
+import Plate from '../components/art/Plate';
 
 export default function ServiceDetail() {
   const { slug } = useParams();
@@ -54,6 +55,8 @@ export default function ServiceDetail() {
               ))}
             </div>
 
+            <Plate name={service.slug} className="mt-10 w-full max-w-md" />
+
             <h2 className="mt-10 display h2 text-heading">What the job includes</h2>
             <ul className="mt-4 grid gap-3 sm:grid-cols-2">
               {service.bullets.map((bullet) => (
@@ -76,7 +79,7 @@ export default function ServiceDetail() {
             </ul>
 
             {service.urgent && (
-              <div className="mt-9 border-l-4 border-rigging-500 bg-raised p-6">
+              <div className="mt-10 border-l-4 border-rigging-500 bg-raised p-6">
                 <p className="font-display text-lg font-bold text-heading">
                   If the tree is already on the house, call.
                 </p>

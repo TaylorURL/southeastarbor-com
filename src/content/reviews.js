@@ -25,12 +25,16 @@ export const reviews = [
   {
     quote:
       'I spoke with Terri, who took the time to listen to my concerns about the oversized tree I had been wanting to remove for quite some time. I could not be happier with the experience.',
+    snippet:
+      '…took the time to listen to my concerns about the oversized tree… I could not be happier with the experience.',
     author: 'Diane M.',
     where: 'Google · 6 months ago',
   },
   {
     quote:
       'Thank you for giving all my trees a haircut! What a great crew you have. Very skilled and fast workers, and they left my yard looking better than what I started with.',
+    snippet:
+      'What a great crew you have… they left my yard looking better than what I started with.',
     author: 'Jennifer C.',
     where: 'Google · 5 months ago',
   },

@@ -4,6 +4,7 @@ import { areas } from '../content/areas';
 import { useSeo } from '../lib/seo';
 import { breadcrumbSchema, treeServiceSchema } from '../lib/structured-data';
 import PageHeader from '../components/sections/PageHeader';
+import BrandMark from '../components/brand/BrandMark';
 
 const profiles = [
   ['Facebook', company.social.facebook],
@@ -61,8 +62,8 @@ export default function Contact() {
           <div className="card p-7">
             <h2 className="display h3 text-heading">Get a quote in writing</h2>
             <p className="mt-3 leading-relaxed text-body">
-              Tell us where the tree is and what it is doing, and we call back with a number or a
-              time to come and look at it.
+              Tell us where the tree is and what it is doing. We call back with a number or a time
+              to come look.
             </p>
             <Link to="/free-estimate" className="btn btn-primary mt-5">
               Get a Free Estimate
@@ -80,7 +81,8 @@ export default function Contact() {
             <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
               {profiles.map(([label, href]) => (
                 <li key={label}>
-                  <a href={href} className="link-inline inline-flex min-h-11 items-center">
+                  <a href={href} className="link-inline inline-flex min-h-11 items-center gap-2">
+                    <BrandMark name={label} className="h-5 w-5 shrink-0" />
                     {label}
                   </a>
                 </li>
