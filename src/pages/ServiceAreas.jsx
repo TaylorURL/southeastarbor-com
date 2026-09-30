@@ -2,12 +2,13 @@ import { Link } from 'react-router-dom';
 import { areas } from '../content/areas';
 import { useSeo } from '../lib/seo';
 import { breadcrumbSchema } from '../lib/structured-data';
+import Photo from '../components/Photo';
 import PageHeader from '../components/sections/PageHeader';
 import EstimateCta from '../components/sections/EstimateCta';
 
 export default function ServiceAreas() {
   useSeo({
-    title: 'Service Areas — Pasadena, Deer Park, La Porte, Clear Lake, Baytown',
+    title: 'Tree Service Areas Near Pasadena, TX | Southeast Arbor Care',
     description:
       'Southeast Arbor Care works Pasadena, Deer Park, La Porte, Clear Lake and Webster, Baytown and southeast Houston. One page for each, with what the trees there actually need.',
     path: '/service-areas',
@@ -33,25 +34,23 @@ export default function ServiceAreas() {
             <Link
               key={area.slug}
               to={`/service-areas/${area.slug}`}
-              className="card group flex flex-col overflow-hidden hover:border-moss-500"
+              className="card group flex flex-col overflow-hidden card-link"
             >
-              <div className="aspect-[16/9] overflow-hidden bg-paper-100">
-                <img
+              <div className="aspect-[16/9] overflow-hidden bg-raised">
+                <Photo
                   src={area.image}
-                  alt=""
                   aria-hidden="true"
-                  loading="lazy"
-                  decoding="async"
+                  sizes="(min-width: 768px) 50vw, 100vw"
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
                 />
               </div>
               <div className="flex flex-1 flex-col p-6">
                 <div className="flex items-baseline justify-between gap-4">
-                  <h2 className="display h2 text-canopy-700">{area.name}</h2>
-                  <span className="text-[0.82rem] text-ink-700">{area.zips}</span>
+                  <h2 className="display h2 text-link">{area.name}</h2>
+                  <span className="text-[0.82rem] text-body">{area.zips}</span>
                 </div>
-                <p className="mt-2 flex-1 leading-relaxed text-ink-700">{area.lede}</p>
-                <span className="mt-4 text-[0.9rem] font-semibold text-canopy-700">
+                <p className="mt-2 flex-1 leading-relaxed text-body">{area.lede}</p>
+                <span className="mt-4 text-[0.9rem] font-semibold text-link">
                   Tree Service in {area.name} →
                 </span>
               </div>

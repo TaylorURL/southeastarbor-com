@@ -74,12 +74,18 @@
 }
 
 /**
- * Two layers, in the order a value travels: the ramp holds the raw colours and
- * never changes; the semantic aliases below name what a value is for and are
- * the only thing a component reads. The palette is bark, canopy and moss for
- * the trade, with one safety orange — the colour of chaps, cones and rigging —
- * reserved for the single action that matters on a page.
+ * Two layers, in the order a value travels. The ramp holds the raw colours: bark,
+ * canopy and moss for the trade, with one safety orange -- the colour of chaps,
+ * cones and rigging -- reserved for the single action that matters on a page.
+ * The ramp is the fixed palette the dark bands and the photographs sit on, and
+ * it reads the same in every theme.
+ *
+ * The roles below it are what a light surface reads: its ground, its cards, its
+ * hairlines and its ink. Those are the only values a theme rewrites.
  */
+/* nav: n12-banner-retract */
+/* panel: mm2-two-column-split */
+/* footer: ft1-mast-headed */
 :root {
   --bark-950: #111a14;
   --bark-900: #16201a;
@@ -96,9 +102,43 @@
   --paper-200: #e3ded0;
   --tan-300: #cfc7b3;
   --ink-700: #3c4640;
-  --surface: #ffffff;
+  --on-accent: #ffffff;
 
-  --header-height: 4.5rem;
+  /* Light, the default. */
+  --ground: var(--paper-50);
+  --raised: var(--paper-100);
+  --surface: #ffffff;
+  --line: rgba(22, 32, 26, 0.13);
+  --field: rgba(22, 32, 26, 0.26);
+  --heading: var(--bark-900);
+  --body: var(--ink-700);
+  --link: var(--canopy-700);
+  --accent-ink: var(--rigging-600);
+  --selection: var(--rigging-200);
+  color-scheme: light;
+
+  /* The bar is the part that stays docked, so it is what the page clears. */
+  --strip-height: 2.25rem;
+  --bar-height: 4rem;
+  --header-height: var(--bar-height);
+  --shell-width: 1280px;
+
+  /* One motion vocabulary: a quick answer to a press or a hover, and a slide
+     for a thing that moves across the page. Both ease out, because a thing
+     that arrives fast and settles reads as a response rather than an animation. */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-quick: 200ms;
+  --motion-slide: 260ms;
+
+  /* Navigation keeps its own timings: a panel opens a little slower than a
+     hover answers. */
+  --nav-open: var(--motion-slide);
+  --nav-ease: var(--ease-out);
+
+  /* The contour rule and the one shadow. */
+  --contour-line: rgba(47, 102, 65, 0.055);
+  --shadow-bar: 0 6px 18px -12px rgba(17, 26, 20, 0.35);
+  --radius: 4px;
 
   /* One display scale, used everywhere, so a heading's size means something
      about its rank rather than about which page it happens to sit on. */
@@ -108,14 +148,63 @@
   --step-3: 1.2rem;
 }
 
+/* Dark: the canopy at night. Followed from the system until a visitor picks. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --ground: #0e1511;
+    --raised: #141d17;
+    --surface: #18231c;
+    --line: rgba(242, 239, 230, 0.12);
+    --field: rgba(242, 239, 230, 0.24);
+    --heading: #f2efe6;
+    --body: #c3cfc6;
+    --link: #9cc9aa;
+    --accent-ink: #f0a36b;
+    --selection: #5a3014;
+    color-scheme: dark;
+  }
+}
+:root[data-theme='dark'] {
+  --ground: #0e1511;
+  --raised: #141d17;
+  --surface: #18231c;
+  --line: rgba(242, 239, 230, 0.12);
+  --field: rgba(242, 239, 230, 0.24);
+  --heading: #f2efe6;
+  --body: #c3cfc6;
+  --link: #9cc9aa;
+  --accent-ink: #f0a36b;
+  --selection: #5a3014;
+  color-scheme: dark;
+}
+
+/* Gray: a dim neutral for reading at dusk, between the other two. */
+:root[data-theme='gray'] {
+  --ground: #1c1f1d;
+  --raised: #232725;
+  --surface: #2a2f2c;
+  --line: rgba(255, 255, 255, 0.11);
+  --field: rgba(255, 255, 255, 0.22);
+  --heading: #f1f2f1;
+  --body: #cdd3cf;
+  --link: #a9cdb4;
+  --accent-ink: #f0a36b;
+  --selection: #5a3014;
+  color-scheme: dark;
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-height) + 1rem);
+  overflow-x: clip;
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  :root {
+    --nav-open: 0ms;
   }
   *,
   *::before,
@@ -126,22 +215,72 @@ html {
 }
 
 body {
-  background: var(--paper-50);
-  color: var(--ink-700);
+  overflow-x: clip;
+  background: var(--ground);
+  color: var(--body);
   font-family: 'Inter', 'Inter Fallback', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: var(--selection);
+  color: var(--heading);
 }
 
 :focus-visible {
   outline: 2px solid var(--rigging-500);
   outline-offset: 3px;
-  border-radius: 2px;
+  border-radius: var(--radius);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--rigging-500);
+  outline-offset: 3px;
+}
+
+/* A field the browser fills from its own store keeps the design's colours,
+   whichever component drew it. */
+input:-webkit-autofill,
+textarea:-webkit-autofill {
+  -webkit-text-fill-color: var(--heading);
+  box-shadow: 0 0 0 1000px var(--surface) inset;
+}
+
+/* Everything a finger or a pointer can act on says so, answers the press at
+   once rather than after the double-tap delay, and does not select its own
+   label when tapped twice. */
+a,
+button,
+summary,
+label[for],
+[role='button'] {
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+button,
+.btn,
+.pressable,
+summary {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+:disabled,
+[aria-disabled='true'] {
+  cursor: not-allowed;
 }
 
 @layer components {
   .shell {
     width: 100%;
-    max-width: 1280px;
+    max-width: var(--shell-width);
     margin-inline: auto;
     padding-inline: 1.25rem;
   }
@@ -158,7 +297,7 @@ body {
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--rigging-600);
+    color: var(--accent-ink);
   }
 
   .eyebrow-light {
@@ -167,27 +306,36 @@ body {
 
   /* Display headings. The negative tracking is the point: Archivo at 800 with
      the letters pulled together reads as a piece of signage, which is the
-     register a company with a chipper and a bucket truck belongs in. */
+     register a company with a chipper and a bucket truck belongs in. A town
+     name longer than a phone is wide breaks rather than pushing the page
+     sideways. */
   .display {
     font-family: 'Archivo', 'Archivo Fallback', system-ui, sans-serif;
     font-weight: 800;
     letter-spacing: -0.028em;
     line-height: 1.03;
     text-wrap: balance;
-    color: var(--ink-900, var(--bark-900));
+    overflow-wrap: anywhere;
+    color: var(--heading);
   }
 
   .h-hero {
     font-size: var(--step-hero);
+    line-height: 1.02;
+    letter-spacing: -0.032em;
+    overflow-wrap: anywhere;
   }
   .h1 {
     font-size: var(--step-1);
     line-height: 1.08;
+    letter-spacing: -0.028em;
+    overflow-wrap: anywhere;
   }
   .h2 {
     font-size: var(--step-2);
     line-height: 1.15;
     letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
   }
   .h3 {
     font-size: var(--step-3);
@@ -214,7 +362,7 @@ body {
     font-weight: 500;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--muted, var(--ink-700));
+    color: var(--body);
   }
 
   /* A faint contour pattern, the way a survey drawing is ruled. It sits under
@@ -223,8 +371,56 @@ body {
     background-image: repeating-radial-gradient(
       circle at 18% 118%,
       transparent 0 46px,
-      rgba(47, 102, 65, 0.055) 46px 47px
+      var(--contour-line) 46px 47px
     );
+  }
+
+  /* Scrims over photographs, all mixed from the darkest bark so a photograph
+     reads as one family with the bands around it. */
+  .scrim-hero-across {
+    background: linear-gradient(
+      100deg,
+      color-mix(in srgb, var(--bark-950) 95%, transparent) 0%,
+      color-mix(in srgb, var(--bark-950) 88%, transparent) 26%,
+      color-mix(in srgb, var(--bark-950) 42%, transparent) 54%,
+      color-mix(in srgb, var(--bark-950) 6%, transparent) 80%
+    );
+  }
+  .scrim-hero-down {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--bark-950) 60%, transparent) 0%,
+      transparent 26%,
+      transparent 72%,
+      color-mix(in srgb, var(--bark-950) 45%, transparent) 100%
+    );
+  }
+  .scrim-card {
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--bark-950) 93%, transparent) 0%,
+      color-mix(in srgb, var(--bark-950) 60%, transparent) 42%,
+      color-mix(in srgb, var(--bark-950) 10%, transparent) 100%
+    );
+  }
+  .scrim-card-soft {
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--bark-950) 92%, transparent) 0%,
+      color-mix(in srgb, var(--bark-950) 50%, transparent) 48%,
+      color-mix(in srgb, var(--bark-950) 5%, transparent) 100%
+    );
+  }
+
+  /* Anything pressable gives under the finger. */
+  .pressable {
+    transition:
+      color var(--motion-quick) var(--ease-out),
+      background-color var(--motion-quick) var(--ease-out),
+      transform var(--motion-quick) var(--ease-out);
+  }
+  .pressable:active {
+    transform: scale(0.98);
   }
 
   .btn {
@@ -232,18 +428,30 @@ body {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    border-radius: 4px;
+    min-height: var(--control-height);
+    border-radius: var(--radius);
     font-weight: 600;
     line-height: 1.1;
     padding: 1rem 1.6rem;
     transition:
-      background-color 140ms ease,
-      color 140ms ease;
+      background-color var(--motion-quick) var(--ease-out),
+      color var(--motion-quick) var(--ease-out),
+      border-color var(--motion-quick) var(--ease-out),
+      transform var(--motion-quick) var(--ease-out);
+  }
+  .btn:active {
+    transform: scale(0.97);
+  }
+  .btn:disabled,
+  .btn[aria-disabled='true'] {
+    opacity: 0.5;
+    transform: none;
+    pointer-events: none;
   }
 
   .btn-primary {
     background: var(--rigging-500);
-    color: #fff;
+    color: var(--on-accent);
   }
   .btn-primary:hover {
     background: var(--rigging-600);
@@ -260,20 +468,205 @@ body {
 
   .btn-outline {
     background: var(--surface);
-    color: var(--canopy-700);
-    border: 1px solid var(--paper-200);
+    color: var(--link);
+    border: 1px solid var(--line);
   }
   .btn-outline:hover {
-    background: var(--paper-100);
+    background: var(--raised);
   }
 
   .card {
     background: var(--surface);
-    border: 1px solid var(--paper-200);
-    border-radius: 4px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
   }
 
+  /* A card that is a link lifts its border on hover and gives on press. */
+  .card-link {
+    transition:
+      border-color var(--motion-quick) var(--ease-out),
+      transform var(--motion-quick) var(--ease-out);
+  }
+  .card-link:hover {
+    border-color: var(--moss-500);
+  }
+  .card-link:active {
+    transform: scale(0.99);
+  }
+
+  .link-inline {
+    color: var(--link);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color var(--motion-quick) var(--ease-out);
+  }
+  .link-inline:hover {
+    color: var(--accent-ink);
+  }
+  .link-inline:active {
+    opacity: 0.7;
+  }
+
+  .prose-body {
+    max-width: 68ch;
+  }
   .prose-body p + p {
     margin-top: 1rem;
+  }
+
+  /* Fields sit on their own surface, keep it when the browser autofills them,
+     and say they are wrong with a border and a message rather than colour alone. */
+  .field {
+    width: 100%;
+    min-height: var(--control-height);
+    border-radius: var(--radius);
+    border: 1px solid var(--field);
+    background: var(--surface);
+    color: var(--heading);
+    padding: 0.625rem 0.75rem;
+    outline: none;
+    transition: border-color var(--motion-quick) var(--ease-out);
+  }
+  .field:hover {
+    border-color: var(--body);
+  }
+  .field:focus {
+    border-color: var(--link);
+  }
+  .field[aria-invalid='true'] {
+    border-color: var(--accent-ink);
+    border-width: 2px;
+  }
+  .field:disabled {
+    opacity: 0.55;
+  }
+  .field:-webkit-autofill,
+  .field:-webkit-autofill:hover,
+  .field:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--heading);
+    box-shadow: 0 0 0 1000px var(--surface) inset;
+    caret-color: var(--heading);
+  }
+
+  /* nav: n12-banner-retract · banner content: status · dismiss: none · retract:
+     scroll-away. The status strip sits in the page's flow above one sticky bar,
+     so scrolling down carries it off and leaves the bar docked alone; it is
+     back as soon as the top of the page is. */
+  .utility-bar {
+    height: var(--strip-height);
+    background: var(--bark-950);
+    font-size: 0.78rem;
+  }
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    height: var(--bar-height);
+    background: var(--ground);
+    border-bottom: 1px solid transparent;
+    transition:
+      border-color var(--motion-quick) var(--ease-out),
+      box-shadow var(--motion-quick) var(--ease-out);
+  }
+  .site-header[data-scrolled='true'] {
+    border-bottom-color: var(--line);
+    box-shadow: var(--shadow-bar);
+  }
+  /* An open panel continues the bar: no rule at the join, one shadow under both. */
+  .site-header[data-open='true'] {
+    border-bottom-color: transparent;
+    box-shadow: none;
+  }
+
+  .nav-link {
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+  .nav-link:hover {
+    color: var(--link);
+  }
+  .nav-caret {
+    transition: transform var(--motion-quick) var(--ease-out);
+  }
+  [aria-expanded='true'] > .nav-caret {
+    transform: rotate(180deg);
+  }
+
+  /* Panel: mm2-two-column-split. The bar's own surface, dropped over the page
+     rather than pushing it down, opaque whatever sits behind it. */
+  .nav-surface {
+    position: absolute;
+    inset: 100% 0 auto;
+    background: var(--ground);
+    border-bottom: 1px solid var(--line);
+    box-shadow: var(--shadow-bar);
+    animation: nav-open var(--nav-open) var(--nav-ease) both;
+  }
+  .nav-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-header) - 1);
+    background: color-mix(in srgb, var(--bark-950) 45%, transparent);
+    animation: nav-fade var(--nav-open) var(--nav-ease) both;
+  }
+
+  /* A section below the first screen is not laid out until it is near the
+     viewport. The browser remembers each one's real height once it has been
+     drawn, so the scrollbar does not jump on the way back up. */
+  /* A photograph's box is filled before the file decodes, so a slow one shows
+     a ground in the site's own colour rather than a hole. */
+  img[srcset] {
+    background-color: var(--raised);
+  }
+
+  .below-fold {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 720px;
+  }
+}
+
+:root {
+  --control-height: 2.75rem;
+  --z-header: 40;
+  --z-rail: 40;
+  --z-skip: 50;
+  --z-spark: 60;
+}
+
+/* Movement only: a panel is readable from its first frame, so it never depends
+   on a fade finishing to be seen. */
+@keyframes nav-open {
+  from {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes nav-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.click-spark {
+  position: fixed;
+  z-index: var(--z-spark);
+  width: 2.25rem;
+  height: 2.25rem;
+  margin: -1.125rem 0 0 -1.125rem;
+  border: 2px solid var(--rigging-500);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: spark var(--motion-slide) var(--ease-out) forwards;
+}
+
+@keyframes spark {
+  from {
+    opacity: 0.7;
+    transform: scale(0.2);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1);
   }
 }

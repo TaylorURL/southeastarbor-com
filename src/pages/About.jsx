@@ -6,7 +6,7 @@ import EstimateCta from '../components/sections/EstimateCta';
 
 export default function About() {
   useSeo({
-    title: `About Southeast Arbor Care — Family Owned in Pasadena Since ${company.foundedYear}`,
+    title: `About Southeast Arbor Care | Pasadena, TX Since ${company.foundedYear}`,
     description: `${company.owner} has run Southeast Arbor Care out of Pasadena for ${yearsInBusiness} years. Fully insured, BBB accredited, and paid only when the work is finished.`,
     path: '/about',
     jsonLd: [
@@ -28,51 +28,57 @@ export default function About() {
 
       <section className="py-14 md:py-20">
         <div className="shell grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="prose-body max-w-2xl text-[1.05rem] leading-relaxed text-ink-700">
+          <div className="prose-body max-w-2xl text-[1.05rem] leading-relaxed text-body">
             <p>
               We are not a franchise and we are not a call centre that subcontracts the work out.
-              The person who quotes the job is on site the day it happens, and the crew has been
-              together long enough that nobody needs telling twice.
+            </p>
+            <p>The person who quotes the job is on site the day it happens.</p>
+            <p>The crew has been together long enough that nobody needs telling twice.</p>
+            <p>What that buys you is boring in the best way.</p>
+            <p>
+              The truck arrives when it was supposed to. The tree comes down in the direction we
+              said it would.
             </p>
             <p>
-              What that buys you is boring in the best way. The truck arrives when it was supposed
-              to. The tree comes down in the direction we said it would. The yard gets raked.
-              Nothing gets left for a second trip, and nothing gets invoiced that was not quoted.
+              The yard gets raked. Nothing gets left for a second trip, and nothing gets invoiced
+              that was not quoted.
+            </p>
+            <p>We work in heavy clay and a high water table, under hurricane season.</p>
+            <p>
+              The houses here went up around trees that are now much bigger than anyone planned for.
             </p>
             <p>
-              We work in heavy clay and a high water table, under hurricane season, in neighborhoods
-              where the houses went up around trees that are now much bigger than anyone planned
-              for. That is a specific set of problems, and {yearsInBusiness} years of it is most of
-              what you are paying for.
+              That is a specific set of problems, and {yearsInBusiness} years of it is most of what
+              you are paying for.
             </p>
             <p>
               You do not pay anything until the work is finished and you have walked it with us.
-              That has been the arrangement since {company.foundedYear} and it is not changing.
             </p>
+            <p>That has been the arrangement since {company.foundedYear} and it is not changing.</p>
           </div>
 
           <aside className="space-y-5">
             <div className="card p-7">
-              <h2 className="display h3 text-bark-900">The facts</h2>
+              <h2 className="display h3 text-heading">The facts</h2>
               <dl className="mt-4 space-y-3 text-[0.95rem]">
                 <div>
-                  <dt className="font-semibold text-ink-700">Owner</dt>
-                  <dd className="text-bark-900">{company.owner}</dd>
+                  <dt className="font-semibold text-body">Owner</dt>
+                  <dd className="text-heading">{company.owner}</dd>
                 </div>
                 <div>
-                  <dt className="font-semibold text-ink-700">Founded</dt>
-                  <dd className="text-bark-900">{company.foundedYear}, Pasadena, Texas</dd>
+                  <dt className="font-semibold text-body">Founded</dt>
+                  <dd className="text-heading">{company.foundedYear}, Pasadena, Texas</dd>
                 </div>
                 <div>
-                  <dt className="font-semibold text-ink-700">Shop</dt>
-                  <dd className="text-bark-900">
+                  <dt className="font-semibold text-body">Shop</dt>
+                  <dd className="text-heading">
                     {company.address.street}, {company.address.city}, {company.address.state}{' '}
                     {company.address.zip}
                   </dd>
                 </div>
                 <div>
-                  <dt className="font-semibold text-ink-700">Hours</dt>
-                  <dd className="text-bark-900">
+                  <dt className="font-semibold text-body">Hours</dt>
+                  <dd className="text-heading">
                     {company.hours.map((h) => `${h.days}: ${h.hours}`).join(' · ')}
                   </dd>
                 </div>
@@ -80,19 +86,27 @@ export default function About() {
             </div>
 
             <div className="card p-7">
-              <h2 className="display h3 text-bark-900">Licensing & insurance</h2>
+              <h2 className="display h3 text-heading">Licensing & insurance</h2>
               <ul className="mt-4 space-y-2.5">
                 {company.credentials.map((credential) => (
-                  <li key={credential} className="flex gap-3 text-ink-700">
-                    <span
-                      className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-moss-500"
+                  <li key={credential} className="flex gap-3 text-body">
+                    <svg
+                      viewBox="0 0 16 16"
+                      className="mt-1 h-4 w-4 shrink-0 text-moss-500"
                       aria-hidden="true"
-                    />
+                    >
+                      <path
+                        d="M3 8.5 6.5 12 13 4.5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      />
+                    </svg>
                     {credential}
                   </li>
                 ))}
               </ul>
-              <p className="mt-4 text-[0.88rem] leading-relaxed text-ink-700">
+              <p className="mt-4 text-[0.88rem] leading-relaxed text-body">
                 Certificates are available on request before work starts. Ask — an uninsured crew in
                 your yard is your liability, not theirs.
               </p>

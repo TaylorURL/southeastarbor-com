@@ -1,5 +1,6 @@
 import { company, hasAddress } from '../content/company.js';
 import { reviewTotals } from '../content/reviews.js';
+import { areas } from '../content/areas.js';
 
 /**
  * Structured data is how a service business shows up as a business rather than
@@ -13,7 +14,9 @@ import { reviewTotals } from '../content/reviews.js';
 export function treeServiceSchema(areaNames = []) {
   const schema = {
     '@context': 'https://schema.org',
-    '@type': 'TreeService',
+    // schema.org has no tree-service type; a home and construction business is
+    // the nearest LocalBusiness that exists, and an unknown type is dropped whole.
+    '@type': 'HomeAndConstructionBusiness',
     '@id': `${company.url}/#business`,
     name: company.legalName,
     url: company.url,
@@ -64,7 +67,7 @@ export function serviceSchema(service) {
     description: service.short,
     provider: { '@id': `${company.url}/#business` },
     url: `${company.url}/services/${service.slug}`,
-    areaServed: { '@type': 'City', name: 'Pasadena, TX' },
+    areaServed: areas.map((area) => ({ '@type': 'City', name: `${area.name}, TX` })),
   };
 }
 
@@ -78,5 +81,17 @@ export function breadcrumbSchema(trail) {
       name: item.name,
       item: `${company.url}${item.path}`,
     })),
+  };
+}
+
+/** The site itself, named as the business names itself, and who publishes it. */
+export function websiteSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${company.url}/#website`,
+    name: company.name,
+    url: company.url,
+    publisher: { '@id': `${company.url}/#business` },
   };
 }

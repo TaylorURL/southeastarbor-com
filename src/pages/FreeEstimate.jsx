@@ -7,7 +7,7 @@ import EstimateForm from '../components/forms/EstimateForm';
 
 export default function FreeEstimate() {
   useSeo({
-    title: 'Free Tree Service Estimate in Pasadena, TX | Southeast Arbor Care',
+    title: 'Free Tree Estimate in Pasadena, TX | Southeast Arbor Care',
     description:
       'Send a photo and an address and get a real number back the same day. Free estimates, no obligation, and nothing charged until the work is finished.',
     path: '/free-estimate',
@@ -35,14 +35,14 @@ export default function FreeEstimate() {
 
           <div className="space-y-8">
             <div>
-              <h2 className="display h2 text-bark-900">Or just call. It is usually faster.</h2>
+              <h2 className="display h2 text-heading">Or just call. It is usually faster.</h2>
               <a
                 href={`tel:${company.phoneHref}`}
-                className="mt-3 block mono text-[2.1rem] font-semibold leading-tight text-canopy-700"
+                className="pressable mt-3 block py-1 mono text-[2.1rem] font-semibold leading-tight text-link hover:text-accent-ink"
               >
                 {company.phone}
               </a>
-              <dl className="mt-4 space-y-1.5 text-[0.95rem] text-ink-700">
+              <dl className="mt-4 space-y-1.5 text-[0.95rem] text-body">
                 {company.hours.map((entry) => (
                   <div key={entry.days} className="flex gap-3">
                     <dt className="font-semibold">{entry.days}</dt>
@@ -50,13 +50,13 @@ export default function FreeEstimate() {
                   </div>
                 ))}
               </dl>
-              <p className="mt-3 text-[0.95rem] font-medium text-rigging-600">
+              <p className="mt-3 text-[0.95rem] font-medium text-accent-ink">
                 {company.afterHoursNote}
               </p>
             </div>
 
             <div className="card p-7">
-              <h2 className="display h3 text-bark-900">What happens next</h2>
+              <h2 className="display h3 text-heading">What happens next</h2>
               <ol className="mt-4 space-y-4">
                 {[
                   [
@@ -75,8 +75,8 @@ export default function FreeEstimate() {
                       {String(i + 1).padStart(2, '0')}
                     </span>
                     <span>
-                      <span className="block font-semibold text-bark-900">{step}</span>
-                      <span className="mt-0.5 block text-[0.92rem] leading-relaxed text-ink-700">
+                      <span className="block font-semibold text-heading">{step}</span>
+                      <span className="mt-0.5 block text-[0.92rem] leading-relaxed text-body">
                         {detail}
                       </span>
                     </span>
@@ -85,9 +85,9 @@ export default function FreeEstimate() {
               </ol>
             </div>
 
-            <div className="border-l-4 border-paper-200 pl-5">
-              <h2 className="display h3 text-bark-900">Where to find us</h2>
-              <address className="mt-2 not-italic leading-relaxed text-ink-700">
+            <div className="border-l-4 border-line pl-5">
+              <h2 className="display h3 text-heading">Where to find us</h2>
+              <address className="mt-2 not-italic leading-relaxed text-body">
                 {company.address.street}
                 <br />
                 {company.address.city}, {company.address.state} {company.address.zip}

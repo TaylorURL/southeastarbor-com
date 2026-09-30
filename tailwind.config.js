@@ -21,13 +21,26 @@ export default {
         paper: { 50: token('paper-50'), 100: token('paper-100'), 200: token('paper-200') },
         tan: { 300: token('tan-300') },
         ink: { 700: token('ink-700') },
+        // Roles rather than colours: each resolves to a different value per
+        // theme. The named colours above are the fixed palette the dark bands
+        // and the photographs sit on, which read the same in every theme.
+        ground: token('ground'),
+        raised: token('raised'),
         surface: token('surface'),
+        line: token('line'),
+        field: token('field'),
+        heading: token('heading'),
+        body: token('body'),
+        link: token('link'),
+        'accent-ink': token('accent-ink'),
       },
       fontFamily: {
         display: ['Archivo', 'Archivo Fallback', 'system-ui', 'sans-serif'],
         sans: ['Inter', 'Inter Fallback', 'system-ui', 'sans-serif'],
       },
-      maxWidth: { shell: '1280px' },
+      maxWidth: { shell: token('shell-width') },
+      // Every transition eases the same way the stylesheet's own do.
+      transitionTimingFunction: { DEFAULT: token('ease-out') },
     },
   },
   plugins: [],

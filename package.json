@@ -2,14 +2,14 @@
   "name": "southeastarbor-com",
   "private": true,
   "license": "UNLICENSED",
-  "version": "2026.40.1",
+  "version": "2026.40.2",
   "type": "module",
   "engines": {
     "node": ">=22"
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && vite build --ssr src/entry-server.jsx --outDir dist-ssr && node scripts/prerender.js",
     "preview": "vite preview",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

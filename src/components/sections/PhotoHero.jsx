@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import Photo from '../Photo';
 
 /**
  * A photograph carries the page rather than sitting beside it. The scrim is two
@@ -19,42 +20,32 @@ export default function PhotoHero({
 }) {
   return (
     <section
+      data-hero
       className={`relative isolate flex flex-col justify-center overflow-hidden bg-bark-900 ${
         compact ? 'min-h-[380px] md:min-h-[440px]' : 'min-h-[540px] md:min-h-[680px]'
       }`}
     >
-      <img
+      <Photo
         src={image}
         alt={alt}
+        priority
         className="absolute inset-0 h-full w-full object-cover"
         style={{ objectPosition: focus }}
-        fetchPriority="high"
-        decoding="async"
       />
       {/* The scrim clears the copy column and then gets out of the way fast, so
           the half of the frame the photograph is working in stays a photograph. */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            'linear-gradient(100deg, rgba(17,26,20,0.95) 0%, rgba(17,26,20,0.88) 26%, rgba(17,26,20,0.42) 54%, rgba(17,26,20,0.06) 80%)',
-        }}
-      />
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            'linear-gradient(to bottom, rgba(17,26,20,0.6) 0%, rgba(17,26,20,0) 26%, rgba(17,26,20,0) 72%, rgba(17,26,20,0.45) 100%)',
-        }}
-      />
+      <div className="scrim-hero-across absolute inset-0" />
+      <div className="scrim-hero-down absolute inset-0" />
 
-      <div className={`shell relative ${compact ? 'py-16 md:py-20' : 'py-20 md:py-32'}`}>
+      <div
+        className={`shell relative flex flex-col gap-5 ${compact ? 'py-16 md:py-20' : 'py-20 md:py-24'}`}
+      >
         {crumbs.length > 0 && (
-          <nav aria-label="Breadcrumb" className="mb-5 text-[0.82rem] text-moss-200">
+          <nav aria-label="Breadcrumb" className="text-[0.82rem] text-moss-200">
             {crumbs.map((crumb, i) => (
               <span key={crumb.path}>
                 {i > 0 && <span className="px-2 opacity-50">/</span>}
-                <Link to={crumb.path} className="hover:text-paper-50">
+                <Link to={crumb.path} className="pressable hover:text-paper-50">
                   {crumb.name}
                 </Link>
               </span>
@@ -69,12 +60,10 @@ export default function PhotoHero({
           </div>
         )}
 
-        <h1 className={`display mt-5 max-w-3xl text-paper-50 ${compact ? 'h1' : 'h-hero'}`}>
-          {title}
-        </h1>
+        <h1 className={`display max-w-4xl text-paper-50 ${compact ? 'h1' : 'h-hero'}`}>{title}</h1>
 
-        {intro && <p className="mt-6 max-w-xl text-lg leading-relaxed text-moss-200">{intro}</p>}
-        {children && <div className="mt-8">{children}</div>}
+        {intro && <p className="max-w-xl text-lg leading-relaxed text-moss-200">{intro}</p>}
+        {children && <div className="pt-3">{children}</div>}
       </div>
     </section>
   );
