@@ -1,5 +1,6 @@
 import { company, hasAddress } from '../content/company.js';
 import { reviewTotals } from '../content/reviews.js';
+import { areas } from '../content/areas.js';
 
 /**
  * Structured data is how a service business shows up as a business rather than
@@ -13,9 +14,9 @@ import { reviewTotals } from '../content/reviews.js';
 export function treeServiceSchema(areaNames = []) {
   const schema = {
     '@context': 'https://schema.org',
-    // TreeService is a LocalBusiness to schema.org; naming both lets a reader
-    // that only knows the base type still see a business.
-    '@type': ['TreeService', 'LocalBusiness'],
+    // schema.org has no tree-service type; a home and construction business is
+    // the nearest LocalBusiness that exists, and an unknown type is dropped whole.
+    '@type': 'HomeAndConstructionBusiness',
     '@id': `${company.url}/#business`,
     name: company.legalName,
     url: company.url,
@@ -66,7 +67,7 @@ export function serviceSchema(service) {
     description: service.short,
     provider: { '@id': `${company.url}/#business` },
     url: `${company.url}/services/${service.slug}`,
-    areaServed: { '@type': 'City', name: 'Pasadena, TX' },
+    areaServed: areas.map((area) => ({ '@type': 'City', name: `${area.name}, TX` })),
   };
 }
 

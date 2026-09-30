@@ -7,7 +7,7 @@ import EstimateCta from '../components/sections/EstimateCta';
 
 export default function OurWork() {
   useSeo({
-    title: 'Our Work: Tree Removal and Trimming | Southeast Arbor',
+    title: 'Our Work: Tree Removal and Trimming | Southeast Arbor Care',
     description:
       'Photographs of the work: sectional takedowns, rigging over structures, storm response, stump grinding and clearance pruning across southeast Harris County.',
     path: '/our-work',

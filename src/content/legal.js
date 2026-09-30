@@ -14,14 +14,14 @@ export const PRIVACY_SECTIONS = [
     body: [
       'The estimate form asks for your name, a phone number, the address of the tree and a description of the job. Nothing else on the site asks you for anything.',
       'The site counts visits: which page was opened, the page you arrived from, your browser, screen size, language and time zone, and how long the page was on screen. It keeps a random number in your browser so a second visit counts as the same visitor rather than a new one. That number is not your name and is not linked to anything you send us.',
-      'When a page breaks in your browser, the error, the page address and the browser version are recorded so the problem can be fixed. That record carries no name and no phone number.',
+      'When a page breaks in your browser, the site records the error, the page address and the browser version so we can fix the problem. That record carries no name and no phone number.',
     ],
   },
   {
     id: 'why-we-collect-it',
     heading: 'Why we collect it',
     body: [
-      'To answer you. An estimate request is used to call you back, walk the job and quote it, and for nothing else.',
+      'To answer you. We use an estimate request to call you back, walk the job and quote it, and for nothing else.',
       'Visit counts and error records tell us which pages people use and when one stops working.',
       'We do not sell anything you send us or anything the site records.',
     ],
