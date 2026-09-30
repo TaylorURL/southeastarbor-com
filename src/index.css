@@ -84,7 +84,7 @@
  * hairlines and its ink. Those are the only values a theme rewrites.
  */
 /* nav: n12-banner-retract */
-/* panel: mm2-two-column-split */
+/* panel: mm3-grouped-columns */
 /* footer: ft1-mast-headed */
 :root {
   --bark-950: #111a14;
@@ -395,7 +395,16 @@ summary {
       color-mix(in srgb, var(--bark-950) 45%, transparent) 100%
     );
   }
-  .scrim-card {
+  /* The shade that keeps a card's words readable over its photograph, drawn
+     by the card itself between the photograph and the words. */
+  .scrim-card::after,
+  .scrim-card-soft::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .scrim-card::after {
     background: linear-gradient(
       to top,
       color-mix(in srgb, var(--bark-950) 93%, transparent) 0%,
@@ -403,7 +412,7 @@ summary {
       color-mix(in srgb, var(--bark-950) 10%, transparent) 100%
     );
   }
-  .scrim-card-soft {
+  .scrim-card-soft::after {
     background: linear-gradient(
       to top,
       color-mix(in srgb, var(--bark-950) 92%, transparent) 0%,
@@ -550,9 +559,9 @@ summary {
   }
 
   /* nav: n12-banner-retract · banner content: status · dismiss: none · retract:
-     scroll-away. The status strip sits in the page's flow above one sticky bar,
-     so scrolling down carries it off and leaves the bar docked alone; it is
-     back as soon as the top of the page is. */
+     scroll-away. The status strip sits in the page's flow above one sticky bar
+     and scrolls away with the page; the bar's three groups each open the same
+     full-width panel beneath it. */
   .utility-bar {
     height: var(--strip-height);
     background: var(--bark-950);
@@ -564,6 +573,7 @@ summary {
     z-index: var(--z-header);
     height: var(--bar-height);
     background: var(--ground);
+    border-top: 1px solid var(--line);
     border-bottom: 1px solid transparent;
     transition:
       border-color var(--motion-quick) var(--ease-out),
@@ -593,8 +603,9 @@ summary {
     transform: rotate(180deg);
   }
 
-  /* Panel: mm2-two-column-split. The bar's own surface, dropped over the page
-     rather than pushing it down, opaque whatever sits behind it. */
+  /* Panel: mm3-grouped-columns. The bar's own surface continued below it,
+     dropped over the page rather than pushing it down, and opaque whatever
+     sits behind it. */
   .nav-surface {
     position: absolute;
     inset: 100% 0 auto;
@@ -603,7 +614,34 @@ summary {
     box-shadow: var(--shadow-bar);
     animation: nav-open var(--nav-open) var(--nav-ease) both;
   }
-  .nav-scrim {
+  /* Opened once, the panel then travels: moving to another group stretches
+     its ground to the new content, carries the rule and shadow down with it,
+     and crossfades what is inside. Both move by transform alone. */
+  .nav-panel {
+    position: absolute;
+    inset: 100% 0 auto;
+    animation: nav-open var(--nav-open) var(--nav-ease) both;
+  }
+  .nav-panel-ground {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 100px;
+    background: var(--ground);
+    transform-origin: top;
+    transition: transform var(--nav-open) var(--nav-ease);
+  }
+  .nav-panel-rule {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 1px;
+    background: var(--line);
+    box-shadow: var(--shadow-bar);
+    transition: transform var(--nav-open) var(--nav-ease);
+  }
+  .nav-swap {
+    animation: nav-fade var(--nav-open) var(--nav-ease) both;
+  }
+  .page-scrim {
     position: fixed;
     inset: 0;
     z-index: calc(var(--z-header) - 1);

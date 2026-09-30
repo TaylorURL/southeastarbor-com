@@ -68,7 +68,7 @@ export default function Home() {
         </div>
       </PhotoHero>
 
-      <section className="border-b border-canopy-800 bg-canopy-700">
+      <section className="border-y border-canopy-800 bg-canopy-700">
         <div className="shell grid grid-cols-2 gap-x-6 gap-y-7 py-9 md:grid-cols-5">
           {proof.map(([figure, unit, note]) => (
             <div key={note}>
@@ -106,7 +106,7 @@ export default function Home() {
                 <Link
                   key={service.slug}
                   to={`/services/${service.slug}`}
-                  className="pressable group relative isolate flex min-h-[340px] flex-col justify-end overflow-hidden rounded-[4px] bg-bark-900 p-7 hover:ring-2 hover:ring-rigging-500 active:opacity-90"
+                  className="scrim-card pressable group relative isolate flex min-h-[340px] flex-col justify-end overflow-hidden rounded-[4px] bg-bark-900 p-7 hover:ring-2 hover:ring-rigging-500 active:opacity-90"
                 >
                   <Photo
                     src={service.image}
@@ -114,7 +114,6 @@ export default function Home() {
                     sizes="(min-width: 768px) 50vw, 100vw"
                     className="absolute inset-0 -z-10 h-full w-full object-cover transition-transform duration-[600ms] group-hover:scale-[1.05]"
                   />
-                  <div className="scrim-card absolute inset-0 -z-10" />
                   {service.urgent && (
                     <span className="mono absolute left-0 top-6 bg-rigging-500 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-white">
                       Answered after hours
@@ -257,7 +256,7 @@ export default function Home() {
               <Link
                 key={area.slug}
                 to={`/service-areas/${area.slug}`}
-                className="pressable group relative isolate flex min-h-[270px] flex-col justify-end overflow-hidden rounded-[4px] bg-bark-900 p-6 hover:ring-2 hover:ring-rigging-500 active:opacity-90"
+                className="scrim-card-soft pressable group relative isolate flex min-h-[270px] flex-col justify-end overflow-hidden rounded-[4px] bg-bark-900 p-6 hover:ring-2 hover:ring-rigging-500 active:opacity-90"
               >
                 <Photo
                   src={area.image}
@@ -265,7 +264,6 @@ export default function Home() {
                   sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                   className="absolute inset-0 -z-10 h-full w-full object-cover transition-transform duration-[600ms] group-hover:scale-[1.05]"
                 />
-                <div className="scrim-card-soft absolute inset-0 -z-10" />
                 <p className="mono text-[0.72rem] uppercase tracking-[0.14em] text-rigging-200">
                   {area.zips}
                 </p>
