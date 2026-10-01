@@ -231,11 +231,29 @@ export default function Header() {
       setPanelHeight(null);
       return undefined;
     }
-    const measure = () => setPanelHeight(body.offsetHeight);
-    measure();
+    // The panel is measured on the frame after the browser reports it, and an
+    // unchanged height is never written back. Measuring and setting state
+    // inside the observer's own callback puts the write inside the browser's
+    // observation loop, which then reports the box as having changed again and
+    // runs the callback once more on the same frame.
+    let frame = 0;
+    let last = null;
+    const write = (height) => {
+      if (height === last) return;
+      last = height;
+      setPanelHeight(height);
+    };
+    const measure = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => write(body.offsetHeight));
+    };
+    write(body.offsetHeight);
     const observer = new ResizeObserver(measure);
     observer.observe(body);
-    return () => observer.disconnect();
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
   }, [active]);
 
   // Escape closes and hands focus back to the trigger that opened the panel;
