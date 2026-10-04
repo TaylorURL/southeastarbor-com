@@ -231,28 +231,41 @@ export default function Header() {
       setPanelHeight(null);
       return undefined;
     }
-    // The panel is measured on the frame after the browser reports it, and an
-    // unchanged height is never written back. Measuring and setting state
-    // inside the observer's own callback puts the write inside the browser's
-    // observation loop, which then reports the box as having changed again and
-    // runs the callback once more on the same frame.
+    // The height is read directly rather than through a ResizeObserver. An
+    // observer delivers inside the browser's own observation loop, and this
+    // box's height depends on the width it is laid out in - a panel tall
+    // enough to bring in the vertical scrollbar narrows the page and rewraps
+    // its own columns - so the box changes size again while that loop is still
+    // settling and the browser reports an observation it could not deliver.
+    // Nothing here needs to run in that loop: the panel changes height when a
+    // group opens, when the viewport changes and when the fonts arrive, and
+    // each of those is readable on its own.
     let frame = 0;
     let last = null;
-    const write = (height) => {
+    const write = () => {
+      const height = body.offsetHeight;
       if (height === last) return;
       last = height;
       setPanelHeight(height);
     };
-    const measure = () => {
+    const schedule = () => {
       cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => write(body.offsetHeight));
+      frame = requestAnimationFrame(write);
     };
-    write(body.offsetHeight);
-    const observer = new ResizeObserver(measure);
-    observer.observe(body);
+    write();
+    let dropped = false;
+    window.addEventListener('resize', schedule);
+    window.addEventListener('orientationchange', schedule);
+    if (document.fonts) {
+      document.fonts.ready.then(() => {
+        if (!dropped) schedule();
+      });
+    }
     return () => {
+      dropped = true;
       cancelAnimationFrame(frame);
-      observer.disconnect();
+      window.removeEventListener('resize', schedule);
+      window.removeEventListener('orientationchange', schedule);
     };
   }, [active]);
 

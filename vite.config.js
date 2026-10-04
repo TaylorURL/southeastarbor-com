@@ -22,9 +22,13 @@ export default defineConfig(({ isSsrBuild }) => ({
   define: { __BUILD_VERSION__: JSON.stringify(version) },
   server: { port: 5199, strictPort: true },
   build: {
-    // Every browser that can reach the site has had these features for years,
-    // so nothing is transpiled down or polyfilled for one that cannot.
-    target: 'es2022',
+    // Optional chaining and the nullish operators arrived in Chrome 80, and a
+    // browser one release older cannot parse a file carrying them at all: the
+    // module is refused whole, so the page answers with its prerendered markup
+    // and then never becomes a site. Lowering the target hands those operators
+    // to the compiler for a few hundred bytes; everything else the site uses
+    // has been in every engine for years.
+    target: 'es2019',
     rollupOptions: isSsrBuild
       ? {}
       : { output: { manualChunks: (id) => (VENDOR.test(id) ? 'vendor' : undefined) } },
