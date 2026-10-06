@@ -46,7 +46,7 @@ export const company = {
    */
   stormMode: false,
 
-  foundedYear: 2000,
+  foundedYear: 1991,
   credentials: ['BBB accredited since 2016, rated A+', 'Fully insured in the State of Texas'],
 
   /** Filled in as each profile is claimed and verified. */
