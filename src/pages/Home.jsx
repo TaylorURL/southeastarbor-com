@@ -47,7 +47,7 @@ export default function Home() {
   useSeo({
     title: 'Tree Removal & Trimming, Pasadena TX | Southeast Arbor Care',
     description:
-      'Family-owned tree removal, trimming, stump grinding and storm cleanup in Pasadena, Deer Park, La Porte and Clear Lake. Since 2000.',
+      'Family-owned tree removal, trimming, stump grinding and storm cleanup in Pasadena, Deer Park, La Porte and Clear Lake. Since 1991.',
     path: '/',
     jsonLd: [websiteSchema(), treeServiceSchema(areas.map((a) => a.name))],
   });

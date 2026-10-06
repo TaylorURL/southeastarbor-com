@@ -4,7 +4,7 @@
   <b>Tree removal, trimming and stump grinding in Pasadena, Texas</b>
 </p>
 <p align="center">
-  Family owned since 2000, serving Pasadena, Deer Park, La Porte and Clear Lake. Call (713) 472-1488.<br />
+  Family owned since 1991, serving Pasadena, Deer Park, La Porte and Clear Lake. Call (713) 472-1488.<br />
   Live at <a href="https://southeastarbor.com">southeastarbor.com</a>.
 </p>
 <p align="center">
@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2026.40.5-1f4a32?style=for-the-badge" alt="Version 2026.40.5" />
+  <img src="https://img.shields.io/badge/version-2026.41.0-1f4a32?style=for-the-badge" alt="Version 2026.41.0" />
   <img src="https://img.shields.io/badge/React-19-1f4a32?style=for-the-badge&logo=react&logoColor=white" alt="React 19" />
   <img src="https://img.shields.io/badge/Vite-7-1f4a32?style=for-the-badge&logo=vite&logoColor=white" alt="Vite 7" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-3-1f4a32?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS 3" />
