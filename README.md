@@ -8,7 +8,8 @@
 
 Southeast Arbor Care has been taking down, trimming and grinding out trees around Pasadena since 1991. Terry Lloyd runs it, and the crew works Pasadena, Deer Park, La Porte, Clear Lake, Webster, Baytown and southeast Houston. The site puts the phone number and a free estimate form within reach on every page.
 
-## What's on the site
+<details>
+<summary>What's on the site</summary>
 
 - A page for each service: tree removal, trimming and pruning, stump grinding, storm and emergency work, lot clearing, and tree health
 - A page for each town the crew serves, linking to the nearby towns and the services offered there
@@ -17,7 +18,10 @@ Southeast Arbor Care has been taking down, trimming and grinding out trees aroun
 - A storm banner with the phone number that goes up on every page when `stormMode` is turned on in `src/content/company.js`
 - Customer reviews from BBB, Yelp and Nextdoor, and a gallery of tree work
 
-## Running it locally
+</details>
+
+<details>
+<summary>Running it locally</summary>
 
 You need Node 22 or newer.
 
@@ -29,12 +33,17 @@ npm run build   # builds to dist/ and prerenders every page
 
 The phone number, hours, address and other business details are in `src/content/company.js`. Services, towns, reviews and gallery photos are next to it in `src/content/`. Set `VITE_SITE_URL` if you need the canonical links to point somewhere other than `https://southeastarbor.com`.
 
+</details>
+
 ## Built with
 
 React 19, React Router 7, Vite 7 and Tailwind CSS 3. Hosted on Vercel.
 
-## License
+<details>
+<summary>License</summary>
 
 Proprietary. Copyright (c) 2026 TaylorURL LLC, all rights reserved. See [LICENSE.md](LICENSE.md).
+
+</details>
 
 Built and maintained by [TaylorURL](https://www.taylorurl.com).
