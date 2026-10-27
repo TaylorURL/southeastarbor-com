@@ -1,105 +1,38 @@
+<p align="center"><img src="public/icon-512.png" width="120" alt=""></p>
 <h1 align="center">Southeast Arbor Care</h1>
-
+<p align="center">Website for a family-owned tree service in Pasadena, Texas.</p>
+<p align="center"><a href="https://southeastarbor.com">southeastarbor.com</a></p>
 <p align="center">
-  <b>Tree removal, trimming and stump grinding in Pasadena, Texas</b>
-</p>
-<p align="center">
-  Family owned since 1991, serving Pasadena, Deer Park, La Porte and Clear Lake. Call (713) 472-1488.<br />
-  Live at <a href="https://southeastarbor.com">southeastarbor.com</a>.
-</p>
-<p align="center">
-  <sub>Published for reading. Proprietary — see <a href="LICENSE.md">LICENSE.md</a>. Outside contributions are not accepted.</sub>
+  <img src="https://img.shields.io/badge/version-2026.44.0-1f4a32?style=for-the-badge" alt="Version 2026.44.0" />
 </p>
 
-<p align="center">
-  <img src="https://img.shields.io/badge/version-2026.41.0-1f4a32?style=for-the-badge" alt="Version 2026.41.0" />
-  <img src="https://img.shields.io/badge/React-19-1f4a32?style=for-the-badge&logo=react&logoColor=white" alt="React 19" />
-  <img src="https://img.shields.io/badge/Vite-7-1f4a32?style=for-the-badge&logo=vite&logoColor=white" alt="Vite 7" />
-  <img src="https://img.shields.io/badge/Tailwind_CSS-3-1f4a32?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS 3" />
-  <img src="https://img.shields.io/badge/Vercel-111a14?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel" />
-</p>
+Southeast Arbor Care has been taking down, trimming and grinding out trees around Pasadena since 1991. Terry Lloyd runs it, and the crew works Pasadena, Deer Park, La Porte, Clear Lake, Webster, Baytown and southeast Houston. The site puts the phone number and a free estimate form within reach on every page.
 
-<br />
+## What's on the site
 
-## Pages
+- A page for each service: tree removal, trimming and pruning, stump grinding, storm and emergency work, lot clearing, and tree health
+- A page for each town the crew serves, linking to the nearby towns and the services offered there
+- A free estimate form that asks for the address and an optional photo of the tree
+- A bar pinned to the bottom of the screen on phones with "Call" and "Free Estimate"
+- A storm banner with the phone number that goes up on every page when `stormMode` is turned on in `src/content/company.js`
+- Customer reviews from BBB, Yelp and Nextdoor, and a gallery of tree work
 
-| Route                  | Holds                          |
-| :--------------------- | :----------------------------- |
-| `/`                    | Hero, services, reviews, areas |
-| `/services`            | Every service                  |
-| `/services/:slug`      | One service in detail          |
-| `/service-areas`       | Every town served              |
-| `/service-areas/:slug` | One town                       |
-| `/about`               | Terry and the company          |
-| `/our-work`            | Photos from the job            |
-| `/reviews`             | Published customer reviews     |
-| `/free-estimate`       | The estimate request form      |
+## Running it locally
 
-## Stack
-
-| Layer       | Technology                                   |
-| :---------- | :------------------------------------------- |
-| UI          | React 19 + React Router 7                    |
-| Build & dev | Vite 7                                       |
-| Styling     | Tailwind CSS 3, on tokens in `src/index.css` |
-| Footer bar  | `@taylorurl/split-rail`                      |
-| Hosting     | Vercel                                       |
-| Versioning  | CalVer                                       |
-
-## Getting started
+You need Node 22 or newer.
 
 ```bash
 npm install
-npm run dev           # Vite dev server on port 5199
-npm run build         # production build to dist
+npm run dev     # http://localhost:5199
+npm run build   # builds to dist/ and prerenders every page
 ```
 
-Node 22 or newer. `VITE_SITE_URL` sets the origin the canonical tags and structured data are built from, and falls back to `https://southeastarbor.com`.
+The phone number, hours, address and other business details are in `src/content/company.js`. Services, towns, reviews and gallery photos are next to it in `src/content/`. Set `VITE_SITE_URL` if you need the canonical links to point somewhere other than `https://southeastarbor.com`.
 
-Every business fact the site states lives in `src/content/company.js`: phone, address, hours, owner, credentials and profile links. An empty value there is how a fact that is not established yet is held. Services, towns, reviews and gallery photos live beside it in `src/content/`.
+## Built with
 
-### Scripts
+React 19, React Router 7, Vite 7 and Tailwind CSS 3. Hosted on Vercel.
 
-| Script                 | Does                                         |
-| :--------------------- | :------------------------------------------- |
-| `npm run dev`          | Start the Vite dev server.                   |
-| `npm run build`        | Production build to `dist`.                  |
-| `npm run preview`      | Serve the built output.                      |
-| `npm run lint`         | Lint with ESLint.                            |
-| `npm run lint:fix`     | Lint and fix what ESLint can fix on its own. |
-| `npm run format`       | Format the repo with Prettier.               |
-| `npm run format:check` | Check formatting without writing.            |
+---
 
-## How it works
-
-- **Every route writes its own head.** The site renders in the browser, so `src/lib/seo.js` sets the title, description, canonical, robots, Open Graph and JSON-LD as each route mounts.
-- **Storm mode is one switch.** `stormMode` in `company.js` puts the emergency bar above every page.
-- **Search engines are kept off for now.** `vercel.json` sends `X-Robots-Tag: noindex` on every response. Remove that header when the site launches.
-- **Browser errors reach the studio's monitoring.** A snippet in `index.html` reports uncaught errors, rejections, failed resource loads and 5xx responses, capped at ten per page.
-- **Traffic is counted without cookies.** The analytics tracker loads after the page does and carries this site's public key.
-
-## Project structure
-
-```
-southeastarbor-com/
-├── api/
-│   └── version.js          the commit the running deployment was built from
-├── public/
-│   ├── fonts/              Archivo, Inter and IBM Plex Mono (woff2)
-│   ├── photos/             job photos
-│   ├── video/              the hero loop
-│   └── release.json        the version and branch this build reports
-├── src/
-│   ├── components/
-│   │   ├── forms/          EstimateForm
-│   │   ├── layout/         Header, Footer, Layout, CallRail, StormBanner
-│   │   └── sections/       PhotoHero, EstimateCta, PageHeader
-│   ├── content/            company, services, areas, reviews, gallery
-│   ├── lib/                seo.js, structured-data.js
-│   ├── pages/              one file per route
-│   ├── App.jsx             the route table
-│   ├── main.jsx            browser entry
-│   └── index.css           fonts, tokens, base layer
-├── index.html              head metadata, the error reporter, the tracker
-└── vercel.json             caching, the SPA fallback, the noindex header
-```
+Built and maintained by [TaylorURL](https://www.taylorurl.com). Proprietary, see [LICENSE.md](LICENSE.md).
