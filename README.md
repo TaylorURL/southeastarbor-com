@@ -6,7 +6,7 @@ Website for a family-owned tree service in Pasadena, Texas.
 
 [southeastarbor.com](https://southeastarbor.com)
 
-<img src="https://img.shields.io/badge/version-2026.44.1-1f4a32?style=for-the-badge" alt="Version 2026.44.1" />
+<img src="https://img.shields.io/badge/version-2026.44.2-1f4a32?style=for-the-badge" alt="Version 2026.44.2" />
 
 Services, the towns it works in, reviews, a gallery and an estimate form. React, prerendered to static HTML at build time, then hydrated. Every page is a full document before any JavaScript runs.
 
@@ -31,7 +31,8 @@ Services, the towns it works in, reviews, a gallery and an estimate form. React,
 
 </details>
 
-## Running it locally
+<details>
+<summary>Running it locally</summary>
 
 Needs Node 22 or newer.
 
@@ -44,6 +45,8 @@ npm run format:check
 ```
 
 `VITE_SITE_URL` overrides the canonical origin, which defaults to `https://southeastarbor.com`.
+
+</details>
 
 <details>
 <summary>CI</summary>
