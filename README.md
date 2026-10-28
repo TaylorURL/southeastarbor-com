@@ -1,37 +1,54 @@
-<p align="center"><img src="public/icon-512.png" width="120" alt=""></p>
-<h1 align="center">Southeast Arbor Care</h1>
-<p align="center">Website for a family-owned tree service in Pasadena, Texas.</p>
-<p align="center"><a href="https://southeastarbor.com">southeastarbor.com</a></p>
-<p align="center">
-  <img src="https://img.shields.io/badge/version-2026.44.0-1f4a32?style=for-the-badge" alt="Version 2026.44.0" />
-</p>
+<img src="public/icon-512.png" width="120" alt="">
 
-Southeast Arbor Care has been taking down, trimming and grinding out trees around Pasadena since 1991. Terry Lloyd runs it, and the crew works Pasadena, Deer Park, La Porte, Clear Lake, Webster, Baytown and southeast Houston. The site puts the phone number and a free estimate form within reach on every page.
+# Southeast Arbor Care
+
+Website for a family-owned tree service in Pasadena, Texas.
+
+[southeastarbor.com](https://southeastarbor.com)
+
+<img src="https://img.shields.io/badge/version-2026.44.0-1f4a32?style=for-the-badge" alt="Version 2026.44.0" />
+
+Services, the towns it works in, reviews, a gallery and an estimate form. React, prerendered to static HTML at build time, then hydrated. Every page is a full document before any JavaScript runs.
+
+## How it's built
+
+- **Content is data.** Services, towns, reviews and the gallery are plain modules in `src/content/`. Pages are templates over them. A new town is a new entry, not a new page.
+- **Prerendered.** `npm run build` does a client build, an SSR build, then `scripts/prerender.js` writes each route to its own `index.html` with its title, meta, JSON-LD and a hero image preload.
+- **One chunk per page.** A small wrapper in `src/routes.js` only goes through `React.lazy` until a chunk is loaded. After that it renders directly, so hydration never flashes a fallback over markup that's already there.
+- **Framework in its own chunk.** React and the router change a few times a year. Site code changes every release. Splitting them means a deploy doesn't bust the framework cache.
 
 <details>
-<summary>What's on the site</summary>
+<summary>Decisions and tradeoffs</summary>
 
-- A page for each service: tree removal, trimming and pruning, stump grinding, storm and emergency work, lot clearing, and tree health
-- A page for each town the crew serves, linking to the nearby towns and the services offered there
-- A free estimate form that asks for the address and an optional photo of the tree
-- A bar pinned to the bottom of the screen on phones with "Call" and "Free Estimate"
-- A storm banner with the phone number that goes up on every page when `stormMode` is turned on in `src/content/company.js`
-- Customer reviews from BBB, Yelp and Nextdoor, and a gallery of tree work
+- Targets `es2019`. A browser one version short of optional chaining rejects the whole module and the page never hydrates. Compiling it down costs a few hundred bytes.
+- Structured data comes from the same content modules as the pages, so the two can't disagree.
+- Light, dark and gray themes. A head script applies the saved choice before first paint. No choice means follow the system.
+- `middleware.js` checks a TaylorURL status endpoint and shows a holding page if the site is paused. It waits 1.5 seconds at most, caches the answer for a minute, and fails open.
+- `api/version.js` returns the deployed commit, uncached.
+- `scripts/photos.sh` cuts photos to 640, 1080 and 1600 px WebP, each held under a byte cap instead of a fixed quality. Only the WebP files are committed.
+- The estimate form validates in the browser, but the submit isn't wired to an endpoint yet.
+- Set `stormMode` in `src/content/company.js` and a storm banner with the phone number goes on every page.
 
 </details>
 
-<details>
-<summary>Running it locally</summary>
+## Running it locally
 
-You need Node 22 or newer.
+Needs Node 22 or newer.
 
 ```bash
 npm install
 npm run dev     # http://localhost:5199
-npm run build   # builds to dist/ and prerenders every page
+npm run build   # client build, SSR build, then prerender into dist/
+npm run lint
+npm run format:check
 ```
 
-The phone number, hours, address and other business details are in `src/content/company.js`. Services, towns, reviews and gallery photos are next to it in `src/content/`. Set `VITE_SITE_URL` if you need the canonical links to point somewhere other than `https://southeastarbor.com`.
+`VITE_SITE_URL` overrides the canonical origin, which defaults to `https://southeastarbor.com`.
+
+<details>
+<summary>CI</summary>
+
+Every pull request runs one `check` job: an attribution check, then `format:check`, `lint` and `build`. A release into `main` also has to move the version in `package.json`, `public/release.json` and the README badge together.
 
 </details>
 
