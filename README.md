@@ -6,7 +6,7 @@ Website for a family-owned tree service in Pasadena, Texas.
 
 [southeastarbor.com](https://southeastarbor.com)
 
-<img src="https://img.shields.io/badge/version-2026.44.2-1f4a32?style=for-the-badge" alt="Version 2026.44.2" />
+<img src="https://img.shields.io/badge/version-2026.44.3-1f4a32?style=for-the-badge" alt="Version 2026.44.3" />
 
 Services, the towns it works in, reviews, a gallery and an estimate form. Each page is a finished HTML document before any JavaScript runs, then React hydrates it.
 
