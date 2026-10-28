@@ -31,7 +31,8 @@ Services, the towns it works in, reviews, a gallery and an estimate form. React,
 
 </details>
 
-## Running it locally
+<details>
+<summary>Running it locally</summary>
 
 Needs Node 22 or newer.
 
@@ -44,6 +45,8 @@ npm run format:check
 ```
 
 `VITE_SITE_URL` overrides the canonical origin, which defaults to `https://southeastarbor.com`.
+
+</details>
 
 <details>
 <summary>CI</summary>
