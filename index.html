@@ -197,24 +197,56 @@
         // cancelled one is not a fault: leaving the page, losing signal, or a
         // release rotating the file out from under a document already in flight
         // all abandon every outstanding link and image at once. Asking for the
-        // file a second time separates the two, since a file the server does not
-        // have answers the same way twice and a cancelled one answers normally.
-        // A cross-origin answer carries no status, so there the only evidence
-        // available is whether the request completes.
-        function reportIfStillMissing(message, url) {
+        // file a second time separates the two.
+        //
+        // What separates them is HOW the second request ends, and only a request
+        // that comes back says anything at all. A server without the file still
+        // answers - a 404 resolves this promise - so a resolved response is the
+        // only thing that can show a file missing, and a resolved cross-origin
+        // answer, which carries no status, shows it present. A request that is
+        // REJECTED carries no evidence either way, because what rejects it is the
+        // network context going away, and that abandons every request in flight
+        // together, this one included.
+        //
+        // Waiting on `unloading` to recognise that moment is not enough, because
+        // it is set from `pagehide`, and a teardown need never fire it: a crawler
+        // that screenshots a page and kills the renderer, or a phone losing
+        // signal, leaves the flag false while every request fails. Then the
+        // verification request fails for the same reason the first one did and is
+        // read as proof, which turns one abandoned visit into a burst of reports
+        // naming files that are on the server and load for everyone who stays.
+        // So where the second request is rejected, ask for something that is known
+        // to answer. If the control request comes back the network is alive and
+        // the asset really did fail; if it fails too the context is gone and there
+        // is nothing here to report. That reads the teardown off the network
+        // itself rather than off an event, so it holds whether `pagehide` fires or
+        // not.
+        var CONTROL_URL = '/favicon.svg';
+        function networkAlive() {
+          return nativeFetch(CONTROL_URL, { cache: 'no-store', mode: 'same-origin' }).then(
+            function (response) {
+              return !!response && response.ok;
+            },
+            function () {
+              return false;
+            },
+          );
+        }
+        function reportIfStillMissing(kind, message, url) {
           if (!nativeFetch || !url) {
-            report('resource', message);
+            report(kind, message);
             return;
           }
           var opaque = url.indexOf(location.origin + '/') !== 0;
           nativeFetch(url, { cache: 'no-store', mode: opaque ? 'no-cors' : 'same-origin' }).then(
             function (response) {
-              if (!opaque && !response.ok) report('resource', message);
+              if (!opaque && !response.ok) report(kind, message);
             },
             function () {
-              // A page on its way out cancels this request too, which says nothing
-              // about the file.
-              if (!unloading) report('resource', message);
+              if (unloading) return;
+              networkAlive().then(function (alive) {
+                if (alive && !unloading) report(kind, message);
+              });
             },
           );
         }
@@ -228,8 +260,24 @@
         function flushHeldAssets() {
           var pending = heldAssets.splice(0, heldAssets.length);
           for (var i = 0; i < pending.length; i += 1) {
-            reportIfStillMissing(pending[i].message, pending[i].url);
+            reportIfStillMissing(pending[i].kind, pending[i].message, pending[i].url);
           }
+        }
+        function holdAsset(kind, message, url) {
+          heldAssets.push({ kind: kind, message: message, url: url });
+          setTimeout(flushHeldAssets, HOLD_MS);
+        }
+        // A route chunk the browser never finishes fetching rejects its import,
+        // and it is worded the same way whether the file is absent or the request
+        // was dropped underneath it - the same weak evidence a link or an image
+        // failing gives, arriving down a different path. So it earns the same wait
+        // and the same second request instead of going straight out.
+        function dynamicImportUrl(message) {
+          var text = String(message == null ? '' : message);
+          if (!/dynamically imported module|module script failed|Unable to preload/i.test(text))
+            return '';
+          var match = text.match(/https?:\/\/[^\s'")]+/);
+          return match ? match[0] : '';
         }
         // Capture phase, because element load failures fire error events that do not bubble.
         window.addEventListener(
@@ -239,11 +287,11 @@
               if (event.target && event.target !== window && event.target.tagName) {
                 if (MEDIA_LIFECYCLE_TAGS[event.target.tagName]) return;
                 var source = event.target.src || event.target.href || '';
-                heldAssets.push({
-                  message: 'Failed to load ' + event.target.tagName.toLowerCase() + ': ' + source,
-                  url: source,
-                });
-                setTimeout(flushHeldAssets, HOLD_MS);
+                holdAsset(
+                  'resource',
+                  'Failed to load ' + event.target.tagName.toLowerCase() + ': ' + source,
+                  source,
+                );
               } else {
                 report('uncaught', event.message, event.error && event.error.stack);
               }
@@ -256,11 +304,13 @@
         window.addEventListener('unhandledrejection', function (event) {
           try {
             var reason = event.reason;
-            report(
-              'rejection',
-              reason && reason.message ? reason.message : reason,
-              reason && reason.stack,
-            );
+            var message = reason && reason.message ? reason.message : reason;
+            var moduleUrl = dynamicImportUrl(message);
+            if (moduleUrl) {
+              holdAsset('rejection', String(message), moduleUrl);
+            } else {
+              report('rejection', message, reason && reason.stack);
+            }
           } finally {
             if (!loud) event.preventDefault();
           }
