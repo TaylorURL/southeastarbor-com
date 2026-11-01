@@ -1,6 +1,7 @@
 import { createElement, lazy } from 'react';
 import { services } from './content/services.js';
 import { areas } from './content/areas.js';
+import { retrying } from './lib/route-recovery.js';
 
 /**
  * Each page is its own chunk, so a visitor landing on a town page does not
@@ -12,8 +13,13 @@ import { areas } from './content/areas.js';
  */
 function page(load) {
   let loaded = null;
+  // One failed chunk request is not an answer: a page torn down mid-load
+  // abandons every request it has open at once, and a release rotating the
+  // hashed names can leave a document asking for a file that has gone. So the
+  // request is made again before the failure travels, on the first load and on
+  // every route change after it.
   const preload = () =>
-    loaded ? Promise.resolve(loaded) : load().then((module) => (loaded = module.default));
+    loaded ? Promise.resolve(loaded) : retrying(load).then((module) => (loaded = module.default));
   const Lazy = lazy(() => preload().then((Component) => ({ default: Component })));
   const Component = (props) => createElement(loaded || Lazy, props);
   return { preload, Component };
