@@ -149,6 +149,15 @@
           replay: function () {
             return held.slice();
           },
+          // The app's own route loader hands over a chunk it has given up on
+          // here rather than letting it travel as an unhandled rejection, so a
+          // file that is genuinely gone is still reported, against the same
+          // evidence every other asset failure has to supply, and one dropped
+          // under a teardown is still silent.
+          asset: function (kind, message, url) {
+            var text = String(message == null ? '' : message);
+            holdAsset(kind, text, url || dynamicImportUrl(text));
+          },
         };
         function report(kind, message, stack) {
           hold(kind, message, stack);
@@ -211,44 +220,54 @@
         // Waiting on `unloading` to recognise that moment is not enough, because
         // it is set from `pagehide`, and a teardown need never fire it: a crawler
         // that screenshots a page and kills the renderer, or a phone losing
-        // signal, leaves the flag false while every request fails. Then the
-        // verification request fails for the same reason the first one did and is
-        // read as proof, which turns one abandoned visit into a burst of reports
-        // naming files that are on the server and load for everyone who stays.
-        // So where the second request is rejected, ask for something that is known
-        // to answer. If the control request comes back the network is alive and
-        // the asset really did fail; if it fails too the context is gone and there
-        // is nothing here to report. That reads the teardown off the network
-        // itself rather than off an event, so it holds whether `pagehide` fires or
-        // not.
-        var CONTROL_URL = '/favicon.svg';
-        function networkAlive() {
-          return nativeFetch(CONTROL_URL, { cache: 'no-store', mode: 'same-origin' }).then(
-            function (response) {
-              return !!response && response.ok;
-            },
-            function () {
-              return false;
-            },
-          );
-        }
+        // signal, leaves the flag false while every request fails.
+        //
+        // Asking a DIFFERENT url whether the network is alive does not cover
+        // that, and it is what was tried here before. A control request answers
+        // another question than the one asked: it reports that something was
+        // reachable at the moment it ran, which is true in the moments either
+        // side of a teardown, true when a crawler refuses one request against a
+        // resource budget while the connection stays up, and true whenever the
+        // control url is answered from a cache or a 304 without the network
+        // being touched at all. None of those say anything about the file in the
+        // report, so a live control request was never evidence that the file was
+        // missing - it only moved the wrong inference one url along.
+        //
+        // So there is no control request. The only evidence that a file is
+        // missing is an answer about THAT file which comes back, and a request
+        // that is rejected is asked again rather than interpreted. A server that
+        // does not have the file answers every time it is asked, so a real 404
+        // still reports, on the first attempt and as loudly as before, and a
+        // request dropped on its own is caught by the attempts after it. A
+        // context that is going away answers none of them, and then nothing is
+        // reported, whether or not `pagehide` ever fires and whatever any other
+        // url would have said.
+        var VERIFY_ATTEMPTS = 3;
+        var VERIFY_RETRY_MS = 400;
         function reportIfStillMissing(kind, message, url) {
           if (!nativeFetch || !url) {
             report(kind, message);
             return;
           }
           var opaque = url.indexOf(location.origin + '/') !== 0;
-          nativeFetch(url, { cache: 'no-store', mode: opaque ? 'no-cors' : 'same-origin' }).then(
-            function (response) {
-              if (!opaque && !response.ok) report(kind, message);
-            },
-            function () {
-              if (unloading) return;
-              networkAlive().then(function (alive) {
-                if (alive && !unloading) report(kind, message);
-              });
-            },
-          );
+          var attempts = 0;
+          function ask() {
+            attempts += 1;
+            nativeFetch(url, { cache: 'no-store', mode: opaque ? 'no-cors' : 'same-origin' }).then(
+              function (response) {
+                // It came back, so this is the whole of the evidence. A status
+                // the server refused shows the file missing; anything else,
+                // an opaque cross-origin answer that carries no status
+                // included, shows it present.
+                if (!opaque && response && !response.ok) report(kind, message);
+              },
+              function () {
+                if (unloading || attempts >= VERIFY_ATTEMPTS) return;
+                setTimeout(ask, VERIFY_RETRY_MS);
+              },
+            );
+          }
+          ask();
         }
         // Asset failures wait rather than reporting at once, so that the things
         // which abandon every outstanding request at the same moment have passed
