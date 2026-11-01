@@ -6,7 +6,7 @@ Website for a family-owned tree service in Pasadena, Texas.
 
 [southeastarbor.com](https://southeastarbor.com)
 
-<img src="https://img.shields.io/badge/version-2026.44.5-1f4a32?style=for-the-badge" alt="Version 2026.44.5" />
+<img src="https://img.shields.io/badge/version-2026.44.6-1f4a32?style=for-the-badge" alt="Version 2026.44.6" />
 
 Services, the towns it works in, reviews, a gallery and an estimate form. Each page is a finished HTML document before any JavaScript runs, then React hydrates it.
 
@@ -18,9 +18,10 @@ The estimate form validates in the browser but isn't wired to an endpoint yet.
 
 `npm run build` does a client build, an SSR build, and then `scripts/prerender.js` writes each route to its own `index.html` with its title, meta, JSON-LD and a preload for the hero image.
 
-Two things worth knowing if you touch it:
+Three things worth knowing if you touch it:
 
 - `src/routes.js` wraps each page so it only goes through `React.lazy` until its chunk has loaded. After that it renders straight through, which stops hydration from flashing a fallback over markup that's already on screen.
+- A chunk request that fails is made twice more, 300 ms apart (`src/lib/route-recovery.js`). If it still won't load the tab reloads once, which fetches the current document and with it chunk names that exist. Past that it only reports, and the prerendered markup is left alone so the page still reads.
 - The target is `es2019` on purpose. A browser one version short of optional chaining rejects the whole module and the page never hydrates. Compiling it down costs a few hundred bytes.
 
 Photos go through `scripts/photos.sh`, which cuts 640, 1080 and 1600 px WebP, each held under a byte cap rather than a fixed quality. Only the WebP files are committed.
