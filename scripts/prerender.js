@@ -29,18 +29,29 @@ const scriptJson = (value) => JSON.stringify(value).replace(/</g, '\\u003c');
 // one goes in the head instead.
 const IMAGE_PRELOAD = /<link\s[^>]*rel="preload"[^>]*as="image"[^>]*\/?>/gi;
 
-/** The hero photograph, preloaded with the same candidates the img offers. */
+/**
+ * The hero photograph, preloaded with the same candidates the img offers.
+ *
+ * href carries the img's own src, always, as the fallback candidate beside
+ * imagesrcset - exactly as the img itself carries src beside srcSet. A preload
+ * written with imagesrcset alone has no URL on it at all, so an engine that
+ * selects no candidate from the set preloads nothing and fires error against an
+ * empty href; the hero then waits for the img to ask for it a second time. With
+ * width descriptors in the set the fallback is never the one chosen, so this
+ * costs no second download, and the element is valid rather than merely
+ * tolerated.
+ */
 function heroPreload(body) {
   const tag = body.match(/<img\s[^>]*fetchPriority="high"[^>]*>/i)?.[0];
   if (!tag) return null;
   const attr = (name) => tag.match(new RegExp(`\\s${name}="([^"]*)"`, 'i'))?.[1];
+  const src = attr('src');
+  if (!src) return null;
   const srcset = attr('srcSet') || attr('srcset');
   const sizes = attr('sizes');
-  if (!srcset)
-    return `<link rel="preload" as="image" href="${attr('src')}" fetchpriority="high" />`;
-  return `<link rel="preload" as="image" imagesrcset="${srcset}"${
-    sizes ? ` imagesizes="${sizes}"` : ''
-  } fetchpriority="high" />`;
+  return `<link rel="preload" as="image" href="${src}"${
+    srcset ? ` imagesrcset="${srcset}"` : ''
+  }${sizes ? ` imagesizes="${sizes}"` : ''} fetchpriority="high" />`;
 }
 
 function headTags(head, body) {
